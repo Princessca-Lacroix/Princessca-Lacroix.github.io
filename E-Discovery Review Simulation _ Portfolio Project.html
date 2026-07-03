@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<!-- saved from url=(0070)file:///Users/princesscalacroix/Downloads/ediscovery-portfolio-v2.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Discovery Review Simulation | Portfolio Project</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --bg: #0a0c12;
+    --surface: #111318;
+    --surface2: #181b24;
+    --border: #1e2235;
+    --border2: #252a3a;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --dim: #334155;
+    --accent: #4f6ef7;
+    --accent2: #818cf8;
+    --green: #22c55e;
+    --green-bg: #052e16;
+    --red: #ef4444;
+    --red-bg: #2d0a0a;
+    --yellow: #f59e0b;
+    --yellow-bg: #2d1a00;
+    --purple: #a855f7;
+    --purple-bg: #1e0a2e;
+    --orange: #f97316;
+    --orange-bg: #2d1200;
+    --gray-bg: #1a1d27;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+    overflow: auto;
+    height: 100vh;
+  }
+
+  /* ── SCREENS ── */
+  .screen { display: none; min-height: 100vh; flex-direction: column; }
+  .screen.active { display: flex; }
+
+  /* ── LANDING ── */
+  #landing {
+    background: var(--bg);
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+  }
+  .matter-badge {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent2);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border: 1px solid var(--border2);
+    padding: 6px 16px;
+    border-radius: 2px;
+    display: inline-block;
+    margin-bottom: 32px;
+  }
+  #landing h1 {
+    font-size: clamp(22px, 4vw, 36px);
+    font-weight: 700;
+    color: #f1f5f9;
+    line-height: 1.2;
+    margin-bottom: 12px;
+    max-width: 700px;
+  }
+  #landing h1 span { color: var(--accent2); }
+  .matter-meta {
+    display: flex;
+    gap: 32px;
+    justify-content: center;
+    margin: 28px 0;
+    flex-wrap: wrap;
+  }
+  .meta-item { text-align: center; }
+  .meta-val { font-family: var(--mono); font-size: 22px; font-weight: 600; color: var(--accent2); }
+  .meta-label { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 4px; }
+
+  .matter-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 28px 32px;
+    max-width: 720px;
+    text-align: left;
+    margin: 0 auto 32px;
+  }
+  .matter-card h3 { font-size: 13px; font-weight: 600; color: var(--accent2); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px; font-family: var(--mono); }
+  .matter-card p { color: #94a3b8; font-size: 14px; line-height: 1.8; margin-bottom: 12px; }
+  .matter-card p:last-child { margin-bottom: 0; }
+  .parties-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 4px; }
+  .party { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 12px 14px; }
+  .party-role { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; font-family: var(--mono); }
+  .party-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .party-desc { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .start-btn {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 14px 40px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background 0.2s, transform 0.1s;
+    font-family: var(--sans);
+  }
+  .start-btn:hover { background: #6078f8; transform: translateY(-1px); }
+
+  /* ── REVIEW SCREEN ── */
+  #review {
+    display: none;
+    flex-direction: column;
+    height: 100vh;
+  }
+  #review.active { display: flex; }
+
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .rel-logo { font-family: var(--mono); font-size: 12px; font-weight: 600; color: #fff; background: var(--accent); padding: 4px 10px; border-radius: 3px; letter-spacing: 1px; }
+  .matter-name { font-size: 12px; color: var(--muted); }
+  .topbar-right { display: flex; align-items: center; gap: 20px; }
+  .progress-wrap { display: flex; align-items: center; gap: 10px; }
+  .progress-text { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .progress-bar { width: 120px; height: 4px; background: var(--border); border-radius: 2px; }
+  .progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.3s; }
+
+  .review-body {
+    display: grid;
+    grid-template-columns: 260px 1fr 240px;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  /* Left panel */
+  .doc-list-panel {
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--surface);
+  }
+  .panel-header {
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .panel-title { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-family: var(--mono); margin-bottom: 10px; }
+  .search-box {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 7px 10px;
+    color: var(--text);
+    font-size: 12px;
+    font-family: var(--sans);
+    outline: none;
+    margin-bottom: 8px;
+  }
+  .search-box:focus { border-color: var(--accent); }
+  .filter-row { display: flex; gap: 6px; }
+  .filter-btn {
+    font-size: 10px;
+    padding: 4px 8px;
+    border-radius: 3px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+    cursor: pointer;
+    font-family: var(--mono);
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .filter-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .doc-list { overflow-y: auto; flex: 1; }
+  .doc-item {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    border-left: 3px solid transparent;
+    transition: background 0.1s;
+  }
+  .doc-item:hover { background: var(--surface2); }
+  .doc-item.active { background: var(--surface2); border-left-color: var(--accent); }
+  .doc-item-id { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-bottom: 3px; }
+  .doc-item-subject { font-size: 12px; font-weight: 500; color: var(--text); margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .doc-item-meta { display: flex; justify-content: space-between; align-items: center; }
+  .doc-item-type { font-size: 10px; color: var(--muted); }
+  .doc-item-tag { font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 2px; font-family: var(--mono); }
+
+  /* Center viewer */
+  .doc-viewer {
+    overflow-y: auto;
+    padding: 24px;
+    background: var(--bg);
+  }
+  .doc-header-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+  .doc-type-badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+  }
+  .doc-title { font-size: 18px; font-weight: 700; color: #f1f5f9; margin-bottom: 14px; line-height: 1.3; }
+  .doc-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .doc-field { }
+  .doc-field-label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-family: var(--mono); margin-bottom: 3px; }
+  .doc-field-val { font-size: 13px; color: #94a3b8; }
+
+  .doc-body-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .doc-body { font-size: 13px; color: #cbd5e1; line-height: 1.85; white-space: pre-wrap; font-family: var(--sans); }
+
+  .review-note {
+    background: #1a1500;
+    border: 1px solid #3d2e00;
+    border-radius: 6px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #fbbf24;
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+  .review-note strong { color: #f59e0b; }
+
+  /* Right coding panel */
+  .coding-panel {
+    border-left: 1px solid var(--border);
+    background: var(--surface);
+    overflow-y: auto;
+    padding: 16px;
+  }
+  .coding-section { margin-bottom: 20px; }
+  .coding-label { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-family: var(--mono); margin-bottom: 10px; }
+
+  .code-btn {
+    width: 100%;
+    padding: 9px 12px;
+    border-radius: 5px;
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    color: #94a3b8;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+    margin-bottom: 6px;
+    font-family: var(--sans);
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .code-btn:hover { border-color: var(--dim); color: var(--text); }
+  .code-btn.selected { }
+  .code-btn .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+  .tag-btn {
+    width: 100%;
+    padding: 7px 10px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--muted);
+    font-size: 11px;
+    cursor: pointer;
+    text-align: left;
+    margin-bottom: 5px;
+    font-family: var(--sans);
+    transition: all 0.15s;
+  }
+  .tag-btn:hover { border-color: var(--dim); color: var(--text); }
+  .tag-btn.selected { background: #1e1240; border-color: var(--accent2); color: var(--accent2); }
+
+  .nav-btns { display: flex; gap: 8px; margin-top: 16px; }
+  .nav-btn {
+    flex: 1;
+    padding: 9px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--sans);
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .nav-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  .save-btn {
+    width: 100%;
+    padding: 11px;
+    background: var(--accent);
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--sans);
+    margin-top: 8px;
+    transition: background 0.2s;
+  }
+  .save-btn:hover { background: #6078f8; }
+
+  .coding-summary {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 12px;
+    margin-top: 16px;
+  }
+  .cs-row { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 6px; }
+  .cs-label { color: var(--muted); }
+  .cs-val { font-family: var(--mono); font-weight: 600; }
+
+  /* Report screen */
+  #report {
+    overflow-y: auto;
+    padding: 40px;
+    background: var(--bg);
+  }
+  .report-header { max-width: 900px; margin: 0 auto 40px; }
+  .report-badge { font-family: var(--mono); font-size: 11px; color: var(--accent2); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 16px; }
+  .report-title { font-size: 28px; font-weight: 700; color: #f1f5f9; margin-bottom: 8px; }
+  .report-subtitle { color: var(--muted); font-size: 14px; }
+
+  .report-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; max-width: 900px; margin: 0 auto 32px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; text-align: center; }
+  .stat-val { font-family: var(--mono); font-size: 32px; font-weight: 700; margin-bottom: 6px; }
+  .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+
+  .report-section { max-width: 900px; margin: 0 auto 32px; }
+  .report-section h2 { font-size: 14px; font-weight: 700; color: var(--accent2); letter-spacing: 2px; text-transform: uppercase; font-family: var(--mono); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+
+  .report-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .report-table th { background: var(--surface2); color: var(--muted); font-weight: 600; padding: 10px 12px; text-align: left; font-family: var(--mono); font-size: 10px; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); }
+  .report-table td { padding: 10px 12px; border-bottom: 1px solid var(--border); color: #94a3b8; vertical-align: top; }
+  .report-table tr:hover td { background: var(--surface); }
+
+  .finding-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 12px; }
+  .finding-card h4 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  .finding-card p { font-size: 13px; color: #94a3b8; line-height: 1.7; }
+  .finding-hot { border-left: 3px solid var(--red); }
+  .finding-priv { border-left: 3px solid var(--purple); }
+  .finding-key { border-left: 3px solid var(--yellow); }
+
+  .exec-summary { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 24px; line-height: 1.85; color: #94a3b8; font-size: 14px; }
+  .exec-summary p { margin-bottom: 14px; }
+
+  .back-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 9px 20px;
+    border-radius: 5px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: var(--sans);
+    margin-bottom: 32px;
+    display: inline-block;
+  }
+  .back-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; }
+
+  .qc-flag { display: inline-block; font-size: 10px; background: #2d1a00; color: var(--yellow); border-radius: 3px; padding: 2px 7px; font-family: var(--mono); margin-left: 8px; }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  @media (max-width: 768px) {
+    .review-body { grid-template-columns: 1fr; }
+    .doc-list-panel, .coding-panel { display: none; }
+    .report-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div class="screen active" id="landing">
+  <div class="matter-badge">Portfolio Project · E-Discovery Simulation</div>
+  <h1>In re <span>NovaTech Solutions, Inc.</span><br>Document Review Matter</h1>
+  <p style="color: var(--muted); margin-bottom: 28px; max-width: 540px;">SEC enforcement investigation · Data breach litigation · Whistleblower allegations</p>
+
+  <div class="matter-meta">
+    <div class="meta-item"><div class="meta-val">100</div><div class="meta-label">Documents</div></div>
+    <div class="meta-item"><div class="meta-val">8</div><div class="meta-label">Custodians</div></div>
+    <div class="meta-item"><div class="meta-val">6</div><div class="meta-label">Issue Tags</div></div>
+    <div class="meta-item"><div class="meta-val">18mo</div><div class="meta-label">Review Period</div></div>
+  </div>
+
+  <div class="matter-card">
+    <h3>Matter Background</h3>
+    <p>NovaTech Solutions, Inc., a mid-size SaaS company, is under SEC investigation for alleged securities fraud related to the concealment of a major data breach affecting 2.3 million customers. Simultaneously, the company faces a class action lawsuit from shareholders and a separate whistleblower complaint filed by a former VP of Engineering.</p>
+    <p>The review covers approximately 100 documents spanning October 2022 – March 2024, including internal emails, executive communications, board meeting minutes, legal hold notices, financial reports, and internal investigation files. Your objective is to identify responsive documents, flag privileged communications, identify hot documents, and apply issue tags for the litigation team.</p>
+    <div class="parties-grid" style="margin-top:16px;">
+      <div class="party"><div class="party-role">Client / Defendant</div><div class="party-name">NovaTech Solutions, Inc.</div><div class="party-desc">SaaS platform, ~1,200 employees</div></div>
+      <div class="party"><div class="party-role">Plaintiff / Regulator</div><div class="party-name">SEC Enforcement Division</div><div class="party-desc">Lead investigator: R. Castillo</div></div>
+      <div class="party"><div class="party-role">Whistleblower</div><div class="party-name">Daniel Marsh</div><div class="party-desc">Former VP of Engineering</div></div>
+      <div class="party"><div class="party-role">Outside Counsel</div><div class="party-name">Hargrove &amp; Lim LLP</div><div class="party-desc">Lead: Atty. Patricia Hargrove</div></div>
+    </div>
+  </div>
+
+  <button class="start-btn" onclick="startReview()">Begin Document Review →</button>
+</div>
+
+<!-- REVIEW -->
+<div class="screen" id="review">
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="rel-logo">RELATIVITY</div>
+      <div class="matter-name">In re NovaTech Solutions · SEC Investigation · Review Batch 001</div>
+    </div>
+    <div class="topbar-right">
+      <div class="progress-wrap">
+        <div class="progress-text" id="prog-text">0 / 100</div>
+        <div class="progress-bar"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+      </div>
+      <button class="start-btn" style="padding:8px 18px;font-size:12px;" onclick="goReport()">View Report →</button>
+    </div>
+  </div>
+
+  <div class="review-body">
+    <!-- Left: doc list -->
+    <div class="doc-list-panel">
+      <div class="panel-header">
+        <div class="panel-title">Document Queue</div>
+        <input class="search-box" type="text" placeholder="Search documents..." oninput="filterDocs(this.value)">
+        <div class="filter-row">
+          <button class="filter-btn active" onclick="setFilter(&#39;all&#39;,this)">All</button>
+          <button class="filter-btn" onclick="setFilter(&#39;uncoded&#39;,this)">Pending</button>
+          <button class="filter-btn" onclick="setFilter(&#39;hot&#39;,this)">Hot</button>
+          <button class="filter-btn" onclick="setFilter(&#39;priv&#39;,this)">Priv</button>
+        </div>
+      </div>
+      <div class="doc-list" id="doc-list"></div>
+    </div>
+
+    <!-- Center: viewer -->
+    <div class="doc-viewer" id="doc-viewer">
+      <div style="color:var(--muted);text-align:center;padding:60px 0;font-size:14px;">Select a document to begin review</div>
+    </div>
+
+    <!-- Right: coding -->
+    <div class="coding-panel">
+      <div class="coding-section">
+        <div class="coding-label">Responsiveness</div>
+        <button class="code-btn" onclick="setCode(&#39;Responsive&#39;)" id="btn-Responsive"><span class="dot" style="background:#22c55e"></span>Responsive</button>
+        <button class="code-btn" onclick="setCode(&#39;Non-Responsive&#39;)" id="btn-Non-Responsive"><span class="dot" style="background:#475569"></span>Non-Responsive</button>
+      </div>
+      <div class="coding-section">
+        <div class="coding-label">Privilege</div>
+        <button class="code-btn" onclick="setCode(&#39;Privileged&#39;)" id="btn-Privileged"><span class="dot" style="background:#a855f7"></span>Privileged</button>
+        <button class="code-btn" onclick="setCode(&#39;Potentially Privileged&#39;)" id="btn-Potentially Privileged"><span class="dot" style="background:#c084fc"></span>Potentially Privileged</button>
+      </div>
+      <div class="coding-section">
+        <div class="coding-label">Special Designations</div>
+        <button class="code-btn" onclick="setCode(&#39;Hot Document&#39;)" id="btn-Hot Document"><span class="dot" style="background:#ef4444"></span>Hot Document</button>
+        <button class="code-btn" onclick="setCode(&#39;Confidential&#39;)" id="btn-Confidential"><span class="dot" style="background:#f59e0b"></span>Confidential</button>
+      </div>
+      <div class="coding-section">
+        <div class="coding-label">Issue Tags</div>
+        <button class="tag-btn" onclick="toggleTag(&#39;Contract Dispute&#39;)" id="tag-Contract Dispute">+ Contract Dispute</button>
+        <button class="tag-btn" onclick="toggleTag(&#39;Financial Issues&#39;)" id="tag-Financial Issues">+ Financial Issues</button>
+        <button class="tag-btn" onclick="toggleTag(&#39;Executive Communications&#39;)" id="tag-Executive Communications">+ Executive Communications</button>
+        <button class="tag-btn" onclick="toggleTag(&#39;Employee Conduct&#39;)" id="tag-Employee Conduct">+ Employee Conduct</button>
+        <button class="tag-btn" onclick="toggleTag(&#39;Regulatory Concerns&#39;)" id="tag-Regulatory Concerns">+ Regulatory Concerns</button>
+        <button class="tag-btn" onclick="toggleTag(&#39;Data Security&#39;)" id="tag-Data Security">+ Data Security</button>
+        <button class="tag-btn" onclick="toggleTag(&#39;Internal Investigation&#39;)" id="tag-Internal Investigation">+ Internal Investigation</button>
+      </div>
+
+      <button class="save-btn" onclick="saveDoc()">Save &amp; Next →</button>
+      <div class="nav-btns">
+        <button class="nav-btn" onclick="prevDoc()">← Prev</button>
+        <button class="nav-btn" onclick="nextDoc()">Next →</button>
+      </div>
+
+      <div class="coding-summary" id="coding-summary">
+        <div class="coding-label" style="margin-bottom:10px">Review Stats</div>
+        <div class="cs-row"><span class="cs-label">Responsive</span><span class="cs-val" id="stat-r" style="color:var(--green)">0</span></div>
+        <div class="cs-row"><span class="cs-label">Non-Responsive</span><span class="cs-val" id="stat-nr" style="color:var(--muted)">0</span></div>
+        <div class="cs-row"><span class="cs-label">Privileged</span><span class="cs-val" id="stat-p" style="color:var(--purple)">0</span></div>
+        <div class="cs-row"><span class="cs-label">Hot Documents</span><span class="cs-val" id="stat-h" style="color:var(--red)">0</span></div>
+        <div class="cs-row"><span class="cs-label">Confidential</span><span class="cs-val" id="stat-c" style="color:var(--yellow)">0</span></div>
+        <div class="cs-row"><span class="cs-label">Uncoded</span><span class="cs-val" id="stat-u" style="color:var(--dim)">100</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT -->
+<div class="screen" id="report">
+  <div style="padding:32px 40px 0;max-width:940px;margin:0 auto;">
+    <button class="back-btn" onclick="goReview()">← Back to Review</button>
+  </div>
+  <div class="report-header">
+    <div class="report-badge">Final Review Report</div>
+    <div class="report-title">In re NovaTech Solutions, Inc.</div>
+    <div class="report-subtitle" id="report-date">7/3/2026</div>
+  </div>
+
+  <div class="report-grid" id="report-stats"></div>
+
+  <div class="report-section">
+    <h2>Coding Summary</h2>
+    <table class="report-table">
+      <thead><tr><th>Category</th><th>Count</th><th>% of Total</th><th>Notes</th></tr></thead>
+      <tbody id="report-coding-table"></tbody>
+    </table>
+  </div>
+
+  <div class="report-section">
+    <h2>Privilege Log</h2>
+    <table class="report-table">
+      <thead><tr><th>Doc ID</th><th>Date</th><th>Author</th><th>Privilege Basis</th><th>Description</th></tr></thead>
+      <tbody id="report-priv-table"></tbody>
+    </table>
+  </div>
+
+  <div class="report-section">
+    <h2>Hot Document Analysis</h2>
+    <div id="report-hot-docs"></div>
+  </div>
+
+  <div class="report-section">
+    <h2>Issue Tag Distribution</h2>
+    <table class="report-table">
+      <thead><tr><th>Issue Tag</th><th>Documents Tagged</th></tr></thead>
+      <tbody id="report-tags-table"></tbody>
+    </table>
+  </div>
+
+  <div class="report-section">
+    <h2>QC Review Notes</h2>
+    <div id="report-qc"></div>
+  </div>
+
+  <div class="report-section">
+    <h2>Executive Summary</h2>
+    <div class="exec-summary" id="report-exec"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const DOCS = [
+  { id:"NT-0001", type:"Email", date:"2022-10-14", from:"cto@novatech.com (Marcus Webb)", to:"ceo@novatech.com (Sandra Cho)", subject:"URGENT: Security Incident - Database Exposure", body:`Sandra,
+
+We have a confirmed breach. Our DLP system flagged unusual outbound data transfers at approximately 2:14 AM last night. Preliminary analysis shows customer PII from the Titan platform database was exfiltrated — we're talking names, emails, encrypted payment data, potentially SSNs for the enterprise tier.
+
+Scope is still unclear. Could be 1M customers, could be more. I have the team working on containment now.
+
+DO NOT send anything to legal yet. I want to understand the full scope before we loop anyone else in. Last thing we need is a paper trail before we know what we're dealing with.
+
+Marcus`, custodian:"Marcus Webb", reviewNote:"⚠️ Critical: CTO explicitly instructs CEO not to loop in legal after discovering a major breach. 'No paper trail' language is significant. This document has direct relevance to the concealment allegations." },
+
+  { id:"NT-0002", type:"Email", date:"2022-10-15", from:"ceo@novatech.com (Sandra Cho)", to:"cfo@novatech.com (Raymond Park)", subject:"RE: Q3 Earnings Call Prep", body:`Raymond,
+
+Quick note before the prep call tomorrow — keep the narrative focused on platform growth and the enterprise pipeline. Q3 numbers are solid and I want that to be the story.
+
+Marcus flagged something internally we're still assessing. Nothing confirmed yet. Make sure earnings materials don't reference any operational incidents until I give the green light.
+
+Sandra`, custodian:"Sandra Cho", reviewNote:"⚠️ CEO instructs CFO to exclude unconfirmed operational incident from earnings materials — sent the day after the breach discovery. Potential securities disclosure issue." },
+
+  { id:"NT-0003", type:"Email", date:"2022-10-16", from:"legal@hargrovelim.com (Patricia Hargrove)", to:"ceo@novatech.com (Sandra Cho)", subject:"Privileged & Confidential: Data Incident Response", body:`Sandra —
+
+This communication is protected by attorney-client privilege and the attorney work product doctrine. Please do not forward.
+
+Following our call this morning, I am formally engaged to advise NovaTech on incident response obligations under applicable state breach notification laws and federal securities regulations.
+
+My preliminary assessment: depending on the scope of the breach, you may have mandatory notification obligations under CCPA, HIPAA (if any health data was involved), and various state statutes — most with 72-hour or 30-day notification windows already running.
+
+I will need the full technical report from your CTO by EOD tomorrow. Please have Marcus contact me directly.
+
+Patricia Hargrove, Esq.
+Hargrove & Lim LLP`, custodian:"Sandra Cho", reviewNote:"This is attorney-client privileged communication from outside counsel. Classic privilege indicators: explicit privilege header, legal advice, retention of counsel." },
+
+  { id:"NT-0004", type:"Internal Memo", date:"2022-10-17", from:"marcus.webb@novatech.com (Marcus Webb)", to:"infosec-team@novatech.com", subject:"Incident Response Protocol — INTERNAL ONLY", body:`Team,
+
+Effective immediately, all communications related to the Titan database incident must be routed through me personally. Do not use Slack for anything related to this matter. Use encrypted email only.
+
+Key points:
+- Scope confirmed: 2.3M customer records exfiltrated including PII
+- Attack vector: SQL injection through legacy API endpoint
+- Attacker IP traced to Eastern European botnet (likely state-affiliated)
+- Remediation timeline: 72-96 hours to patch and resecure
+
+Do NOT discuss scope numbers with anyone outside this team, including other NovaTech executives, until further notice from Sandra or me.
+
+Strict communication controls are in place for legal reasons.
+
+MW`, custodian:"Marcus Webb", reviewNote:"⚠️ Confirms full scope (2.3M records) was known by 10/17 — while public disclosure didn't occur for months. Communication restriction instruction to team is significant." },
+
+  { id:"NT-0005", type:"Email", date:"2022-10-18", from:"daniel.marsh@novatech.com (Daniel Marsh)", to:"marcus.webb@novatech.com (Marcus Webb)", subject:"RE: Incident Response Protocol", body:`Marcus,
+
+I have serious concerns about the communication blackout you've put in place. I understand the instinct to control the narrative but I need to flag this:
+
+Under SEC Regulation FD and state breach notification statutes, there are mandatory disclosure timelines we may already be violating. I've been in this industry long enough to know that "waiting to understand scope" is not a defense when the scope is already understood.
+
+I'm going to need written assurance from General Counsel that we are in compliance before I continue participating in the current response protocol.
+
+I'm also documenting this conversation.
+
+Daniel Marsh
+VP of Engineering`, custodian:"Daniel Marsh", reviewNote:"Key document — Daniel Marsh (future whistleblower) formally objects to communication controls and cites legal compliance concerns. 'I'm documenting this' is significant for whistleblower timeline." },
+
+  { id:"NT-0006", type:"Email", date:"2022-10-19", from:"marcus.webb@novatech.com (Marcus Webb)", to:"daniel.marsh@novatech.com (Daniel Marsh)", subject:"RE: RE: Incident Response Protocol", body:`Daniel,
+
+I hear your concerns. Legal is in the loop. Patricia Hargrove has advised us that a measured, controlled disclosure process is the appropriate course of action given the complexity of the applicable regulatory frameworks.
+
+I'd encourage you to trust the process here. We're all working toward the same goal.
+
+Please hold off on any external communications until we've had a chance to speak in person.
+
+Marcus`, custodian:"Marcus Webb", reviewNote:"Response to Marsh's compliance objection. CTO claims counsel has advised 'measured disclosure' — potentially in conflict with NT-0003 (privilege log). Also instructs Marsh to avoid external communications." },
+
+  { id:"NT-0007", type:"Board Minutes", date:"2022-10-21", from:"boardsec@novatech.com (Corporate Secretary)", to:"board@novatech.com", subject:"Special Board Meeting Minutes — October 21, 2022 [CONFIDENTIAL]", body:`IN ATTENDANCE: Sandra Cho (CEO), Raymond Park (CFO), Marcus Webb (CTO), Patricia Hargrove (Outside Counsel), Board Members: James Whitfield, Carla Osei, Tom Farina
+
+AGENDA ITEM 1: Security Incident Update
+CEO Cho briefed the board on an ongoing security incident affecting customer data. Outside counsel Hargrove advised that disclosure obligations are being assessed. Board was advised that scope is "still being quantified."
+
+Board member Osei asked whether the company had an obligation to notify customers or regulators at this time. Outside counsel responded that notifications would be issued "in accordance with applicable law at the appropriate time."
+
+CEO Cho moved to authorize outside counsel to manage all regulatory communications. Motion passed 4-1. (Whitfield dissented.)
+
+AGENDA ITEM 2: Q3 Earnings Release
+CFO Park confirmed Q3 earnings release on track for November 3. No discussion of potential material impact of security incident on financial disclosures.
+
+Meeting adjourned.`, custodian:"Corporate Records", reviewNote:"⚠️ Board was briefed on the incident but Q3 earnings discussion did not address material impact — and scope was already confirmed internally. Board dissent by Whitfield may be relevant." },
+
+  { id:"NT-0008", type:"Email", date:"2022-11-03", from:"ir@novatech.com (Investor Relations)", to:"press@novatech.com", subject:"Q3 Earnings Release — APPROVED FINAL", body:`Team,
+
+Attached is the final approved Q3 earnings release cleared by Sandra and Raymond. Please distribute via PR Newswire at 4:01 PM today.
+
+Key messages:
+• Revenue up 34% YoY to $47.2M
+• Enterprise customer growth +18%
+• Raised full-year guidance
+
+No operational incidents are referenced in this release per executive direction. Please do not add anything to the boilerplate risk factors section without CFO sign-off.
+
+The release has been reviewed by outside counsel.`, custodian:"Investor Relations", reviewNote:"⚠️ Q3 earnings released with no disclosure of breach. 'No operational incidents referenced per executive direction' is significant language for securities fraud investigation." },
+
+  { id:"NT-0009", type:"Email", date:"2022-11-15", from:"daniel.marsh@novatech.com (Daniel Marsh)", to:"sec.gov.tips@sec.gov", subject:"[EXTERNAL] Whistleblower Submission - NovaTech Solutions", body:`To the SEC Office of the Whistleblower:
+
+I am a current officer of NovaTech Solutions, Inc. (NASDAQ: NVTK). I am submitting this complaint pursuant to Section 21F of the Securities Exchange Act of 1934.
+
+I have reason to believe that NovaTech has materially concealed a cybersecurity incident affecting 2.3 million customers from its securities filings and Q3 2022 earnings release, in possible violation of SEC Regulation S-K Item 106 and applicable disclosure obligations.
+
+I have retained counsel and am prepared to provide supporting documentation.
+
+Daniel Marsh`, custodian:"Daniel Marsh", reviewNote:"⚠️ The actual SEC whistleblower submission from Daniel Marsh. This is the origin document of the SEC investigation. Highly significant for all case theories." },
+
+  { id:"NT-0010", type:"Email", date:"2022-11-16", from:"hr@novatech.com (Janet Flores, HR)", to:"ceo@novatech.com (Sandra Cho)", subject:"Confidential: Daniel Marsh — Performance Review Initiated", body:`Sandra,
+
+Per our conversation, I've initiated a formal performance review for Daniel Marsh (VP of Engineering). Documentation of performance concerns has been requested from his direct reports and will be compiled by November 22.
+
+Note: Given the timing sensitivity you mentioned, I've ensured this is handled through standard HR channels with no unusual flags.
+
+Janet`, custodian:"HR Records", reviewNote:"⚠️ Performance review initiated against Marsh the day after his SEC whistleblower submission. Potential retaliation timeline is critical for employment claims." },
+
+  { id:"NT-0011", type:"Contract", date:"2022-09-01", from:"legal@novatech.com", to:"cloudvendor@securevault.com", subject:"Master Services Agreement — SecureVault Cloud Storage", body:`MASTER SERVICES AGREEMENT
+
+This Master Services Agreement ("Agreement") is entered into as of September 1, 2022, between NovaTech Solutions, Inc. ("Client") and SecureVault Technologies LLC ("Provider").
+
+1. SERVICES. Provider agrees to furnish cloud storage and data processing services as described in Schedule A.
+
+2. DATA SECURITY. Provider shall maintain SOC 2 Type II compliance and implement reasonable security measures including encryption at rest (AES-256) and in transit (TLS 1.3).
+
+3. BREACH NOTIFICATION. In the event of a suspected security incident involving Client Data, Provider shall notify Client within 24 hours of discovery.
+
+4. LIABILITY. Provider's aggregate liability shall not exceed fees paid in the prior 12 months.
+
+Executed as of the date first written above.
+Sandra Cho, CEO — NovaTech Solutions, Inc.
+Brian Cho, CEO — SecureVault Technologies LLC`, custodian:"Legal Records", reviewNote:"Vendor contract with data security and breach notification provisions. Relevant to whether SecureVault complied with 24-hr notification obligation and whether their security measures were adequate." },
+
+  { id:"NT-0012", type:"Email", date:"2022-12-01", from:"raymond.park@novatech.com (Raymond Park)", to:"sandra.cho@novatech.com (Sandra Cho)", subject:"RE: Year-End Guidance — CONFIDENTIAL", body:`Sandra,
+
+I've run the numbers three ways and the conclusion is the same: if we disclose the breach and the scope becomes public before the January secondary offering, we're looking at a 30-40% share price haircut minimum. The institutional investors won't touch us.
+
+My strong recommendation is to time any disclosure to occur after the secondary offering closes. Patricia has flagged that this creates legal exposure, but it's manageable compared to the offering risk.
+
+This email should be considered confidential and not shared beyond you and me.
+
+Raymond`, custodian:"Raymond Park", reviewNote:"⚠️ CFO explicitly recommends timing breach disclosure to avoid impacting a secondary stock offering. This is direct evidence of securities fraud motive. Patricia Hargrove is referenced as having flagged legal exposure." },
+
+  { id:"NT-0013", type:"Email", date:"2022-12-02", from:"legal@hargrovelim.com (Patricia Hargrove)", to:"raymond.park@novatech.com (Raymond Park)", subject:"Privileged & Confidential — ATTORNEY-CLIENT COMMUNICATION", body:`Raymond —
+
+This communication is protected by attorney-client privilege.
+
+I want to be unequivocal about what I communicated in our call yesterday: I did not advise that timing disclosure around the secondary offering is "manageable" from a legal risk standpoint. My advice was the opposite — that any deliberate timing of disclosure to benefit a securities transaction would constitute securities fraud.
+
+I am documenting this clarification in writing to ensure there is no misunderstanding.
+
+NovaTech must make disclosure decisions based solely on legal obligations, not market timing considerations.
+
+Patricia Hargrove, Esq.`, custodian:"Raymond Park", reviewNote:"Attorney-client privileged communication in which outside counsel CONTRADICTS the CFO's characterization of her advice and explicitly warns against market-timed disclosure. Critical for evaluating advice-of-counsel defense." },
+
+  { id:"NT-0014", type:"Spreadsheet", date:"2022-12-10", from:"finance@novatech.com (Finance Team)", to:"raymond.park@novatech.com (Raymond Park)", subject:"Projected Disclosure Impact Model — Q4 Scenarios", body:`[EXCEL ATTACHMENT: breach_impact_scenarios_v3.xlsx]
+
+SCENARIO MODELING: NOVATECH DATA BREACH DISCLOSURE
+
+SCENARIO A — Disclose Q4 2022 (Pre-Secondary Offering)
+  Projected share price impact: -32% to -41%
+  Secondary offering viability: FAILED
+  Regulatory exposure (delayed): LOW
+  Estimated total loss: $180M-$240M
+
+SCENARIO B — Disclose Q1 2023 (Post-Secondary Offering)
+  Projected share price impact: -28% to -35%
+  Secondary offering viability: COMPLETED at projected terms
+  Regulatory exposure (delayed): MEDIUM-HIGH
+  Estimated gain from offering: +$85M
+
+SCENARIO C — Disclose Q2 2023 (Post Earnings)
+  Projected share price impact: -35% to -50%
+  Regulatory exposure (delayed): VERY HIGH
+  SEC enforcement probability: 65%
+
+RECOMMENDATION: Scenario B offers best risk-adjusted outcome.`, custodian:"Finance Records", reviewNote:"⚠️ Financial model explicitly analyzing disclosure timing to maximize proceeds from secondary stock offering. 'SEC enforcement probability: 65%' suggests internal awareness of regulatory risk. This is a key exhibit." },
+
+  { id:"NT-0015", type:"Email", date:"2023-01-15", from:"ceo@novatech.com (Sandra Cho)", to:"ir@novatech.com", subject:"Secondary Offering — Closing Confirmation", body:`Team,
+
+Pleased to confirm the secondary offering closed successfully this morning at $34.50 per share, raising $89M in gross proceeds. This is a strong outcome and positions NovaTech well for 2023.
+
+Raymond and I will be discussing next steps on the Q4 earnings timeline. More to follow.
+
+Sandra`, custodian:"Sandra Cho", reviewNote:"Secondary offering closed successfully. Per NT-0014, disclosure was planned for post-offering. Timestamp relative to breach discovery (10/14/22) and disclosure timeline is significant." },
+
+  { id:"NT-0016", type:"Press Release", date:"2023-02-14", from:"pr@novatech.com", to:"[PUBLIC DISTRIBUTION]", subject:"NovaTech Solutions Announces Data Security Incident", body:`FOR IMMEDIATE RELEASE
+
+NovaTech Solutions, Inc. (NASDAQ: NVTK) today announced that it experienced a cybersecurity incident in October 2022 in which unauthorized actors accessed customer data including names, email addresses, and in some cases, encrypted payment information.
+
+The company has taken steps to remediate the vulnerability and enhance its security posture. NovaTech has notified affected customers and is cooperating with relevant regulatory authorities.
+
+"The security of our customers' data is our highest priority," said CEO Sandra Cho. "We deeply regret this incident and have taken decisive action to protect our customers going forward."
+
+The company does not believe this incident will have a material impact on its financial results.`, custodian:"PR Records", reviewNote:"Public disclosure came 123 days after breach discovery (10/14/22) and one month after the secondary offering closed. The 'not material' characterization is in tension with the financial modeling in NT-0014." },
+
+  { id:"NT-0017", type:"Email", date:"2023-02-15", from:"sec.enforcement@sec.gov", to:"legal@hargrovelim.com (Patricia Hargrove)", subject:"[OFFICIAL] In the Matter of NovaTech Solutions — Formal Investigation Notice", body:`Re: File No. HO-14472
+
+Dear Ms. Hargrove:
+
+The Securities and Exchange Commission, Division of Enforcement, hereby provides formal notice that it has opened an investigation into NovaTech Solutions, Inc. regarding potential violations of Sections 10(b) and 13(a) of the Securities Exchange Act of 1934.
+
+NovaTech is directed to preserve all documents, communications, and electronically stored information relating to the cybersecurity incident disclosed on February 14, 2023, all related internal communications from October 2022 through the date of this notice, and all materials related to the Q3 2022 and Q4 2022 earnings releases and the January 2023 secondary stock offering.
+
+A formal subpoena will follow within 14 days.
+
+R. Castillo
+Division of Enforcement, SEC`, custodian:"Hargrove & Lim LLP", reviewNote:"The SEC's formal investigation notice establishing the matter scope. This is the predicate document for the entire review. Also establishes the legal hold obligation." },
+
+  { id:"NT-0018", type:"Email", date:"2022-10-20", from:"it@novatech.com (IT Department)", to:"all@novatech.com", subject:"Scheduled System Maintenance — October 21-22", body:`Hi all,
+
+We'll be performing routine server maintenance this weekend (October 21-22). Systems may be intermittently unavailable from 11 PM Friday to 6 AM Sunday.
+
+Please save your work and log out before end of day Friday.
+
+IT Team`, custodian:"IT Records", reviewNote:"Routine IT maintenance notice sent company-wide. No apparent connection to the security incident. Non-responsive to the review's core issues." },
+
+  { id:"NT-0019", type:"Email", date:"2022-10-22", from:"sales@novatech.com (Alex Kim)", to:"enterprise-team@novatech.com", subject:"Q4 Pipeline Update — Great Quarter Shaping Up", body:`Team,
+
+Quick pipeline update — we have 14 enterprise deals in late stages, total ARR potential of $6.2M. Momentum is strong.
+
+Let's keep pushing. Details in Salesforce.
+
+Alex`, custodian:"Alex Kim", reviewNote:"Sales pipeline update with no connection to security incident or legal matter. Non-responsive." },
+
+  { id:"NT-0020", type:"Email", date:"2022-11-01", from:"marketing@novatech.com (Lisa Torres)", to:"ceo@novatech.com (Sandra Cho)", subject:"Q3 Earnings Day — Media Strategy", body:`Sandra,
+
+Media plan for earnings day tomorrow:
+• Press release via PR Newswire at 4:01 PM
+• CNBC interview confirmed for 5:30 PM
+• Twitter/LinkedIn posts scheduled for 4:05 PM
+• Talking points focused on revenue growth and enterprise momentum
+
+Let me know if anything changes.
+
+Lisa`, custodian:"Marketing Records", reviewNote:"Marketing communications plan for Q3 earnings day — the same day the breach was not disclosed. Potentially relevant to coordination of public messaging around non-disclosure." },
+
+  { id:"NT-0021", type:"Email", date:"2022-10-25", from:"daniel.marsh@novatech.com (Daniel Marsh)", to:"hr@novatech.com (Janet Flores)", subject:"Request for HR Guidance — Compliance Concern", body:`Janet,
+
+I need to speak with you confidentially about a situation involving potential legal compliance issues within the company. I'm concerned that certain decisions being made at the executive level may not be in compliance with applicable securities laws and data breach notification requirements.
+
+I want to understand my rights and obligations as an officer of the company in this situation before I take further action. Please treat this conversation as strictly confidential.
+
+Daniel Marsh`, custodian:"Daniel Marsh", reviewNote:"Marsh contacts HR about compliance concerns — pre-dating his SEC submission. Establishes early internal escalation attempt before going external. Relevant to whistleblower retaliation analysis." },
+
+  { id:"NT-0022", type:"Email", date:"2022-10-26", from:"hr@novatech.com (Janet Flores)", to:"ceo@novatech.com (Sandra Cho)", subject:"Confidential — Officer Compliance Inquiry", body:`Sandra,
+
+Daniel Marsh came to me today with what he described as a compliance concern at the executive level involving securities and breach notification laws. He asked about his rights as an officer.
+
+I told him I'd need to consult with legal before advising him. I wanted to flag this to you first.
+
+Janet`, custodian:"HR Records", reviewNote:"⚠️ HR immediately reported Marsh's confidential inquiry to the CEO rather than handling it independently. This sequence (Marsh → HR → CEO) is relevant to the retaliation claim and whether Marsh's complaint was kept confidential." },
+
+  { id:"NT-0023", type:"Email", date:"2023-01-05", from:"raymond.park@novatech.com (Raymond Park)", to:"audit-committee@novatech.com", subject:"Q4 Preview — Confidential", body:`Audit Committee Members,
+
+Sharing a preview of Q4 metrics ahead of our January 20 call:
+• Revenue: ~$51M (est.)
+• Gross margin: 71%
+• Cash position strong
+
+One matter we'll need to discuss on the call: outside counsel has advised that the October security incident will require disclosure in our Q4 10-K. Patricia will join the call to walk through the disclosure language.
+
+Raymond`, custodian:"Raymond Park", reviewNote:"CFO's Q4 preview to audit committee mentions counsel has advised disclosure is required in 10-K. This is months after the breach — relevant to timeline of when the company internally acknowledged disclosure obligations." },
+
+  { id:"NT-0024", type:"Meeting Notes", date:"2023-01-20", from:"boardsec@novatech.com", to:"audit-committee@novatech.com", subject:"Audit Committee Meeting Notes — January 20, 2023 [PRIVILEGED]", body:`AUDIT COMMITTEE MEETING — PRIVILEGED & CONFIDENTIAL
+Attorney-Client Privileged — Attorney Work Product
+
+IN ATTENDANCE: Carla Osei (Chair), Tom Farina, James Whitfield, Raymond Park (CFO), Patricia Hargrove (Outside Counsel)
+
+AGENDA: Q4 Earnings Preparation / Security Incident Disclosure
+
+Patricia Hargrove presented recommended disclosure language for the Q4 10-K. She advised the committee that the company's disclosure obligations arose upon confirmation of the breach scope on or around October 17, 2022.
+
+Board member Whitfield asked directly: "Are we in compliance with our disclosure timeline?" Outside counsel responded: "I am not in a position to confirm compliance at this time."
+
+CFO Park requested that the disclosure language be drafted to minimize characterization of the incident's financial impact.
+
+Meeting adjourned.`, custodian:"Corporate Records", reviewNote:"Privileged (attorney-client / work product) audit committee meeting. Outside counsel declines to confirm compliance with disclosure timeline when directly asked — and acknowledges breach obligations arose 10/17/22. Critical document." },
+
+  { id:"NT-0025", type:"Email", date:"2023-03-01", from:"daniel.marsh@novatech.com (Daniel Marsh)", to:"ceo@novatech.com (Sandra Cho)", subject:"Notice of Resignation", body:`Sandra,
+
+This letter serves as my formal notice of resignation from NovaTech Solutions, Inc., effective March 15, 2023.
+
+I came to NovaTech because I believed in what we were building. The events of the past five months have made it impossible for me to continue in good conscience.
+
+I have retained legal counsel. I will not be signing the separation agreement as currently drafted, specifically the non-disparagement clause and the provision requiring me to cooperate with the company's response to any regulatory inquiries.
+
+Daniel Marsh`, custodian:"Daniel Marsh", reviewNote:"Marsh's resignation letter — references refusal to sign non-disparagement clause and regulatory cooperation provision. Relevant to ongoing SEC investigation and whistleblower status." },
+
+  { id:"NT-0026", type:"Email", date:"2022-10-14", from:"noreply@securebank.com", to:"billing@novatech.com", subject:"Invoice — October 2022 Payment Processing", body:`Dear NovaTech Billing Team,
+
+Please find attached your October invoice for payment processing services.
+
+Total: $14,280.00
+Due: November 1, 2022
+
+Thank you for your business.`, custodian:"Finance Records", reviewNote:"Routine vendor invoice from payment processor. No connection to the security incident or legal matter. Non-responsive." },
+
+  { id:"NT-0027", type:"Email", date:"2022-12-15", from:"facilities@novatech.com", to:"all@novatech.com", subject:"Holiday Party — December 22nd!", body:`Hi NovaTech family!
+
+Don't forget our annual holiday party is coming up on December 22nd at 6 PM at The Grand Ballroom. RSVP by December 18th.
+
+See you there!
+Facilities Team`, custodian:"Facilities Records", reviewNote:"Company holiday party invitation. Completely non-responsive to review issues." },
+
+  { id:"NT-0028", type:"Email", date:"2022-11-10", from:"marcus.webb@novatech.com (Marcus Webb)", to:"securevault.ceo@securevault.com (Brian Cho)", subject:"RE: Incident Post-Mortem Discussion", body:`Brian,
+
+I'd prefer to have this conversation off email. Can we schedule a call this week?
+
+There are some sensitive matters related to the incident we should discuss that are better handled verbally at this stage. I'll have my assistant reach out to schedule.
+
+Marcus`, custodian:"Marcus Webb", reviewNote:"CTO requests to move sensitive post-incident discussion off email. 'Better handled verbally' instruction is noteworthy given the legal hold context and the communication controls established in NT-0004." },
+
+  { id:"NT-0029", type:"Internal Report", date:"2022-10-30", from:"infosec@novatech.com (InfoSec Team)", to:"marcus.webb@novatech.com (Marcus Webb)", subject:"[RESTRICTED] Incident Technical Report v2.0 — FINAL", body:`CLASSIFICATION: RESTRICTED — ATTORNEY-CLIENT PRIVILEGED
+Prepared at the direction of outside counsel Hargrove & Lim LLP
+
+INCIDENT SUMMARY
+Date of Discovery: October 14, 2022, 2:14 AM
+Date of Containment: October 18, 2022
+Attack Vector: SQL injection via legacy /api/v1/users endpoint
+Data Exfiltrated: 2,312,847 customer records
+
+AFFECTED DATA FIELDS:
+- Full name
+- Email address  
+- Encrypted password hash
+- Billing address
+- Last 4 digits of payment card
+- For Enterprise tier (44,200 records): SSN, DOB, government ID
+
+ATTACKER PROFILE: IP addresses traced to known Eastern European cybercrime infrastructure. Attribution to specific group not confirmed.
+
+REMEDIATION STATUS: Complete as of October 18, 2022.
+
+NOTE: This report was prepared at the direction of outside counsel and is protected by attorney-client privilege and work product doctrine.`, custodian:"Marcus Webb", reviewNote:"Potentially privileged technical incident report prepared 'at direction of outside counsel' — privilege claim needs evaluation. Contains definitive scope confirmation (2.3M records, including SSNs for 44K enterprise customers). Critical factual document." },
+
+  { id:"NT-0030", type:"Email", date:"2023-04-10", from:"sec.enforcement@sec.gov (R. Castillo)", to:"legal@hargrovelim.com (Patricia Hargrove)", subject:"Document Production Request — NovaTech (File No. HO-14472)", body:`Ms. Hargrove,
+
+Pursuant to the formal subpoena issued February 28, 2023, please produce all responsive documents in the categories identified in Schedule A within 30 days.
+
+Of particular interest to the Division: all internal communications regarding the October 2022 cybersecurity incident from October 14, 2022 through February 14, 2023; all board and committee minutes related to the incident; all financial analyses regarding the timing of public disclosure; and all communications with or about former VP of Engineering Daniel Marsh.
+
+R. Castillo
+Senior Enforcement Attorney, SEC Division of Enforcement`, custodian:"Hargrove & Lim LLP", reviewNote:"SEC formal document production request identifying exact categories of interest — which map directly to the most sensitive documents in this review. Review team should note the SEC's stated priorities." },
+
+  // NON-RESPONSIVE / ROUTINE DOCS
+  { id:"NT-0031", type:"Email", date:"2022-10-17", from:"benefits@novatech.com", to:"all@novatech.com", subject:"Open Enrollment Reminder — Deadline October 31", body:`Hi everyone,\n\nJust a reminder that benefits open enrollment closes October 31. Please log in to BenefitsHub to review your options.\n\nHR Team`, custodian:"HR Records", reviewNote:"Benefits enrollment notice. Non-responsive." },
+  { id:"NT-0032", type:"Email", date:"2022-11-07", from:"alex.kim@novatech.com", to:"sales@novatech.com", subject:"Deal Win — Meridian Health Systems", body:`Team,\n\nExcited to share that we just closed Meridian Health Systems at $480K ARR. Great work everyone!\n\nAlex`, custodian:"Alex Kim", reviewNote:"Sales win announcement. Non-responsive to legal matter." },
+  { id:"NT-0033", type:"Email", date:"2022-10-20", from:"product@novatech.com", to:"engineering@novatech.com", subject:"Sprint Planning — Week of Oct 24", body:`Team,\n\nSprint planning is Monday at 10 AM. Please have your ticket estimates ready in Jira.\n\nProduct Team`, custodian:"Engineering Records", reviewNote:"Product sprint planning. Non-responsive." },
+  { id:"NT-0034", type:"Email", date:"2022-12-05", from:"travel@novatech.com", to:"executives@novatech.com", subject:"Q1 Offsite — Travel Arrangements", body:`Executive Team,\n\nTravel arrangements for the Q1 offsite in Scottsdale are confirmed. Details in the attached itinerary.\n\nTravel Coordinator`, custodian:"Admin Records", reviewNote:"Executive travel arrangements. Non-responsive." },
+  { id:"NT-0035", type:"Email", date:"2023-01-10", from:"pr@novatech.com (Lisa Torres)", to:"ceo@novatech.com (Sandra Cho)", subject:"Media Coverage — Year in Review", body:`Sandra,\n\nAttaching the year-end media coverage summary. Overall very positive — 94% favorable coverage through Q3. The January secondary offering coverage was also strong.\n\nLisa`, custodian:"PR Records", reviewNote:"PR coverage summary. Potentially relevant — notes 'favorable coverage through Q3' suggesting public perception management, but borderline. Could be tagged Executive Communications." },
+  { id:"NT-0036", type:"Email", date:"2022-10-28", from:"legal@hargrovelim.com (Patricia Hargrove)", to:"marcus.webb@novatech.com (Marcus Webb)", subject:"Privileged & Confidential: Technical Report Direction", body:`Marcus —\n\nPrivileged & Confidential — Attorney-Client Communication\n\nI am formally directing the InfoSec team to prepare a technical incident report under my supervision for purposes of legal advice. This designation ensures the report is protected under attorney-client privilege and work product doctrine.\n\nPlease have the team route all draft versions through my office.\n\nPatricia Hargrove, Esq.`, custodian:"Marcus Webb", reviewNote:"Outside counsel formally directing preparation of the technical report (NT-0029) to establish privilege. The privilege claim in NT-0029 traces back to this instruction." },
+  { id:"NT-0037", type:"Email", date:"2022-11-20", from:"raymond.park@novatech.com", to:"finance@novatech.com", subject:"Q4 Budget Planning", body:`Team,\n\nKicking off Q4 budget planning. Please submit department budget requests by December 1. Standard template in SharePoint.\n\nRaymond`, custodian:"Raymond Park", reviewNote:"Standard budget planning email. Non-responsive." },
+  { id:"NT-0038", type:"Email", date:"2023-02-20", from:"customers@novatech.com", to:"[2.3M CUSTOMERS - BATCHED]", subject:"Important Notice Regarding Your NovaTech Account", body:`Dear NovaTech Customer,\n\nWe are writing to inform you of a security incident that occurred in October 2022 affecting your account data. We have taken steps to secure our systems.\n\nIf you believe your information may have been misused, please contact our dedicated support line at 1-800-NOVA-HELP.\n\nWe sincerely apologize for any inconvenience.\n\nNovaTech Security Team`, custodian:"PR Records", reviewNote:"Customer breach notification sent February 20, 2023 — 129 days after discovery. The delay between discovery (10/14/22) and notification (2/20/23) is directly relevant to breach notification law violations." },
+  { id:"NT-0039", type:"Email", date:"2022-10-14", from:"monitoring@novatech.com (AutoAlert)", to:"infosec@novatech.com", subject:"[AUTOMATED] DLP Alert — Unusual Outbound Transfer Detected", body:`AUTOMATED SECURITY ALERT — PRIORITY HIGH\n\nTime: 2022-10-14 02:14:33 UTC\nAlert Type: Data Loss Prevention — Outbound Transfer Volume Anomaly\nSource IP: 10.24.118.44 (Titan DB Cluster)\nDestination: 185.234.218.92 (External — Eastern Europe)\nData Volume: 847GB transferred over 2.1 hours\nProtocol: HTTPS/443\nStatus: Transfer complete — connection terminated\n\nImmediate review recommended.`, custodian:"IT Records", reviewNote:"The automated DLP alert that first detected the breach — establishes precise timestamp of when the company had constructive notice. Critical for disclosure timeline analysis." },
+  { id:"NT-0040", type:"Email", date:"2023-03-15", from:"daniel.marsh@novatech.com", to:"hr@novatech.com", subject:"Final Day — Out of Office", body:`Janet,\n\nToday is my last day. I've returned my equipment and badge to the front desk.\n\nMy personal attorney is Michael Greenberg at Greenberg & Associates. Please direct all future communications to him.\n\nDaniel`, custodian:"Daniel Marsh", reviewNote:"Marsh's final day email — directs all communications to his personal attorney. Establishes legal representation cutoff date." },
+
+  // MORE DOCS
+  { id:"NT-0041", type:"Email", date:"2022-10-16", from:"ceo@novatech.com (Sandra Cho)", to:"marcus.webb@novatech.com (Marcus Webb)", subject:"RE: URGENT: Security Incident", body:`Marcus,\n\nI've spoken with Patricia. She's engaged and will advise. In the meantime, maintain the communication controls.\n\nI need a full briefing by end of day Thursday. Numbers, scope, everything.\n\nDo not put anything further in writing on this topic until you've spoken with Patricia.\n\nSandra`, custodian:"Sandra Cho", reviewNote:"CEO instructs CTO to avoid further written communications and maintains communication controls after engaging outside counsel. 'Do not put anything further in writing' is significant." },
+  { id:"NT-0042", type:"Email", date:"2022-10-23", from:"marcus.webb@novatech.com", to:"ceo@novatech.com", subject:"Thursday Briefing — Summary", body:`Sandra,\n\nPer our verbal discussion Thursday — the summary you requested.\n\nAs discussed, I am not putting the specifics in email per legal's guidance. I trust you have what you need from our call.\n\nIf you need anything in writing, please have Patricia confirm the appropriate channel.\n\nMarcus`, custodian:"Marcus Webb", reviewNote:"Follow-up to verbal briefing — notable for what it doesn't say. CTO confirms avoiding written specifics 'per legal's guidance.' Potentially relevant to claims of coordinated concealment." },
+  { id:"NT-0043", type:"Email", date:"2023-01-22", from:"board@novatech.com (James Whitfield)", to:"legal@hargrovelim.com (Patricia Hargrove)", subject:"Privileged — Board Member Inquiry", body:`Patricia —\n\nThis communication is attorney-client privileged.\n\nI dissented at the October board meeting because I believed the disclosure timeline was inappropriate. I am now formally asking you, as outside counsel to NovaTech, whether my personal liability exposure as a board member is different from that of executive management given my dissent.\n\nI would appreciate a confidential response.\n\nJames Whitfield\nBoard Member`, custodian:"Corporate Records", reviewNote:"Privileged — board member seeking personal legal advice from company outside counsel regarding his own liability. May create conflict of interest. His dissent at October board meeting (NT-0007) is referenced." },
+  { id:"NT-0044", type:"Meeting Notes", date:"2022-10-21", from:"ceo@novatech.com (Sandra Cho)", to:"[Personal Notes — Not Distributed]", subject:"Personal Notes — Board Meeting 10/21", body:`Personal notes — not distributed\n\nPatricia held up reasonably well under Carla's questions. James pushed back harder than expected — his dissent is on record. Need to speak with him privately.\n\nRaymond handled the earnings Q well. No one connected the dots.\n\n"At the appropriate time" is the right framing. Buys us room.\n\nMarcus is the wildcard. Daniel is becoming a problem.`, custodian:"Sandra Cho", reviewNote:"⚠️ CEO's personal handwritten/personal notes from the October 21 board meeting (not distributed). 'No one connected the dots' and 'Daniel is becoming a problem' are striking. Highly significant." },
+  { id:"NT-0045", type:"Email", date:"2022-12-20", from:"hr@novatech.com (Janet Flores)", to:"daniel.marsh@novatech.com (Daniel Marsh)", subject:"Performance Review Meeting — December 27", body:`Daniel,\n\nThis is to schedule your performance review meeting for December 27 at 2 PM with me and your manager.\n\nPlease come prepared to discuss the areas outlined in the performance improvement documentation sent separately.\n\nJanet Flores\nHuman Resources`, custodian:"HR Records", reviewNote:"Performance review meeting notice for Marsh — part of the HR action initiated in NT-0010. December 27 meeting, six weeks after SEC submission." },
+  { id:"NT-0046", type:"Contract", date:"2023-01-10", from:"legal@hargrovelim.com", to:"daniel.marsh@novatech.com", subject:"Proposed Separation Agreement and General Release", body:`SEPARATION AGREEMENT AND GENERAL RELEASE\n\nThis Agreement is entered into between NovaTech Solutions, Inc. and Daniel Marsh.\n\n1. SEPARATION. Employee's employment shall terminate March 15, 2023.\n2. SEVERANCE. Company will pay $95,000 as severance.\n3. NON-DISPARAGEMENT. Employee agrees not to make disparaging statements about Company or its officers.\n4. COOPERATION. Employee agrees to cooperate fully with Company in connection with any regulatory, legal, or administrative proceedings.\n5. GENERAL RELEASE. Employee releases all claims against Company.\n\nThis Agreement must be accepted within 21 days.`, custodian:"Legal Records", reviewNote:"The separation agreement Marsh declined to sign (referenced in NT-0025). Note the cooperation clause requiring regulatory cooperation — which Marsh specifically objected to given the SEC investigation." },
+  { id:"NT-0047", type:"Email", date:"2023-02-01", from:"raymond.park@novatech.com", to:"audit-committee@novatech.com", subject:"Draft 10-K Disclosure Language — REVIEW REQUIRED", body:`Audit Committee,\n\nAttached is the draft 10-K disclosure language prepared by outside counsel for the cybersecurity incident. Patricia recommends Scenario 2 language which characterizes the incident as "not material to financial results."\n\nPlease review before our February 10 call.\n\nNote: The characterization of materiality was Patricia's assessment based on the financial analysis we provided her.\n\nRaymond`, custodian:"Raymond Park", reviewNote:"CFO circulates draft 10-K language claiming incident is 'not material' — while internal models (NT-0014) projected 30-40% share price impact. The characterization of counsel's role in the materiality assessment should be cross-referenced with NT-0013." },
+  { id:"NT-0048", type:"Email", date:"2022-10-15", from:"infosec@novatech.com", to:"marcus.webb@novatech.com", subject:"RE: Incident Update — Scope Narrowing", body:`Marcus,\n\nUpdate as of 6 PM:\n- Containment measures in place but breach window remains open\n- Affected records estimate: 1.8M - 2.5M (narrowing)\n- Enterprise tier exposure confirmed: SSN fields included\n- Outside perimeter not yet notified per your instruction\n\nWe'll have tighter numbers by tomorrow morning.\n\nInfoSec`, custodian:"IT Records", reviewNote:"October 15 scope update — enterprise SSN exposure confirmed on Day 2. 'Outside perimeter not yet notified per your instruction' shows CTO actively directing notification delay." },
+  { id:"NT-0049", type:"Email", date:"2022-10-29", from:"ceo@novatech.com (Sandra Cho)", to:"board@novatech.com", subject:"Board Update — Confidential Operational Matter", body:`Board Members,\n\nBrief update on the confidential operational matter discussed at last week's meeting: outside counsel continues to assess our disclosure obligations. No material developments to report at this time.\n\nWe will provide a full update at the December board meeting.\n\nSandra`, custodian:"Sandra Cho", reviewNote:"CEO's October 29 update to full board — characterizes situation as having 'no material developments' while scope has been internally confirmed since 10/17 and external counsel is engaged. Potentially misleading board communication." },
+  { id:"NT-0050", type:"Email", date:"2023-06-01", from:"sec.enforcement@sec.gov", to:"legal@hargrovelim.com", subject:"Wells Notice — NovaTech Solutions", body:`Ms. Hargrove,\n\nPlease be advised that the Division of Enforcement intends to recommend that the Commission bring a civil action against NovaTech Solutions, Inc., Sandra Cho, and Raymond Park for violations of Sections 10(b) and 13(a) of the Securities Exchange Act of 1934 and Rule 10b-5 thereunder.\n\nYou have 30 days to submit a Wells Submission in response.\n\nR. Castillo`, custodian:"Hargrove & Lim LLP", reviewNote:"SEC Wells Notice — formal notice of intent to bring enforcement action against NovaTech, Cho, and Park. The end-state of the investigation initiated by Marsh's whistleblower complaint." },
+
+  // Additional docs to reach 100
+  { id:"NT-0051", type:"Email", date:"2022-11-25", from:"engineering@novatech.com", to:"marcus.webb@novatech.com", subject:"Titan Platform — Security Patch Deployed", body:`Marcus,\n\nConfirming the SQL injection vulnerability in /api/v1/users has been patched and deployed to production. Penetration testing complete — no further vulnerabilities identified in the endpoint.\n\nEngineering Team`, custodian:"Engineering Records", reviewNote:"Confirms remediation of the attack vector. Relevant to technical timeline — remediation completed 5 weeks after breach." },
+  { id:"NT-0052", type:"Email", date:"2022-12-10", from:"sandra.cho@novatech.com", to:"raymond.park@novatech.com", subject:"RE: Year-End Guidance — January Offering", body:`Raymond,\n\nAgreed on the timing. Make sure the prospectus risk factors are reviewed by Patricia before filing. I don't want any surprises.\n\nSandra`, custodian:"Sandra Cho", reviewNote:"CEO references prospectus review for secondary offering. If the prospectus risk factors omitted the breach, this establishes awareness of the filing content. Cross-reference with NT-0015." },
+  { id:"NT-0053", type:"Legal Document", date:"2023-01-12", from:"legal@hargrovelim.com", to:"sec.filings@novatech.com", subject:"S-3 Registration Statement Review — Privileged", body:`Privileged & Confidential — Attorney Work Product\n\nRe: NovaTech S-3 Registration Statement\n\nI have reviewed the S-3 registration statement for the January secondary offering. The risk factors section includes standard cybersecurity risk language but does not reference the October 2022 incident specifically.\n\nThis is my assessment: the company's decision whether to include specific disclosure of the October incident in the S-3 is a business judgment that carries significant legal risk if the incident is later deemed material.\n\nI have advised the client of this risk in writing.\n\nPatricia Hargrove, Esq.`, custodian:"Hargrove & Lim LLP", reviewNote:"Privileged attorney work product — outside counsel's review of the S-3. Hargrove notes the breach is not disclosed in the S-3 risk factors and documents that she advised of the risk. Critical for the advice-of-counsel defense." },
+  { id:"NT-0054", type:"Email", date:"2022-10-31", from:"marketing@novatech.com", to:"all@novatech.com", subject:"Halloween Costume Contest Winners!", body:`NovaTech fam!\n\nCongratulations to our Halloween costume contest winners! First place goes to the DevOps team for their 'Cloud Native' group costume.\n\nPhotos on the company Slack!\n\nMarketing Team`, custodian:"Marketing Records", reviewNote:"Company Halloween event. Non-responsive." },
+  { id:"NT-0055", type:"Email", date:"2023-01-08", from:"ir@novatech.com", to:"investors@novatech.com", subject:"Secondary Offering — Investor Roadshow Schedule", body:`Dear Investor,\n\nPlease find attached the schedule for NovaTech's secondary offering roadshow, January 10-12, 2023.\n\nManagement presentations will include CEO Sandra Cho and CFO Raymond Park.\n\nPlease contact your representative with any questions.`, custodian:"Investor Relations", reviewNote:"Roadshow schedule for secondary offering — held while breach was undisclosed. Investor presentations during this period are relevant to securities fraud claims." },
+  { id:"NT-0056", type:"Email", date:"2022-11-05", from:"daniel.marsh@novatech.com", to:"personal@danielmarsh.com", subject:"Notes to Self", body:`Personal memo —\n\nDate: November 5, 2022\n\nI am documenting the following for my personal records:\n- I was made aware of the full scope of the breach on October 17, 2022\n- I was instructed by CTO Webb not to discuss scope outside the incident team\n- I raised compliance concerns with Webb on October 18 and HR on October 25\n- Neither inquiry was addressed with legal guidance\n- I believe NovaTech is in violation of breach notification laws and potentially securities disclosure requirements\n\nI am considering my options.`, custodian:"Daniel Marsh", reviewNote:"Marsh's personal memo documenting the timeline from his perspective — contemporaneous record of his knowledge and concerns. Cross-reference with official company timeline. Highly relevant to whistleblower claim." },
+  { id:"NT-0057", type:"Email", date:"2023-02-28", from:"customerservice@novatech.com", to:"ops@novatech.com", subject:"Breach Notification Call Volume Report", body:`Ops Team,\n\nSince the breach notification went out February 14-20, we've received 47,832 customer calls and 12,447 support tickets related to the incident.\n\nAverage hold time: 38 minutes. CSAT severely impacted.\n\nWe're bringing in 200 additional temp agents.\n\nCS Leadership`, custodian:"Operations Records", reviewNote:"Customer service impact data post-disclosure. Relevant to damages quantification in the class action but borderline for SEC investigation. Could be tagged Financial Issues." },
+  { id:"NT-0058", type:"Email", date:"2022-10-18", from:"marcus.webb@novatech.com", to:"legal@hargrovelim.com (Patricia Hargrove)", subject:"Technical Summary — Privileged", body:`Patricia —\n\nPer your request, here is a brief technical summary for your legal assessment. Protected by attorney-client privilege.\n\nIncident: SQL injection breach, Titan platform\nScope: ~2.3M customer records\nEnterprise tier: ~44,200 records including SSN\nContainment: Complete as of today\nRemediation: In progress, est. 72 hours\n\nPlease advise on next steps.\n\nMarcus`, custodian:"Marcus Webb", reviewNote:"Privileged communication — CTO providing technical summary to outside counsel. First formal confirmation of 2.3M scope transmitted to counsel. The existence of this communication is relevant to when counsel had full information." },
+  { id:"NT-0059", type:"Email", date:"2023-04-01", from:"classaction@lawfirm.com", to:"legal@hargrovelim.com", subject:"NovaTech Shareholder Class Action — Service of Process", body:`Ms. Hargrove,\n\nPlease find enclosed the complaint in Gordon v. NovaTech Solutions, Inc., filed in the United States District Court for the Northern District of California.\n\nThe complaint alleges violations of Sections 10(b) and 20(a) of the Securities Exchange Act and Rule 10b-5 on behalf of all purchasers of NovaTech common stock between November 3, 2022 and February 14, 2023.\n\nPlease acknowledge receipt.\n\nCounsel for Plaintiff Class`, custodian:"Hargrove & Lim LLP", reviewNote:"Service of process for the shareholder class action. Defines the class period (Q3 earnings through breach disclosure) — the window during which securities are alleged to have been purchased at artificially inflated prices." },
+  { id:"NT-0060", type:"Email", date:"2022-10-17", from:"infosec@novatech.com", to:"marcus.webb@novatech.com", subject:"FINAL Scope Confirmation — RESTRICTED", body:`Marcus,\n\nFINAL confirmed scope as of 10/17 5 PM:\n\nTotal records exfiltrated: 2,312,847\n- Standard tier: 2,268,647 records (name, email, encrypted password, billing address)\n- Enterprise tier: 44,200 records (above + SSN, DOB, government ID number)\n\nThis number is final. The attack window is fully closed.\n\nAll copies of this summary are restricted to incident team per your instructions.\n\nInfoSec`, custodian:"IT Records", reviewNote:"⚠️ The definitive scope confirmation email — 2,312,847 records confirmed on October 17, 2022. This directly contradicts the board's characterization that scope was 'still being quantified' at the October 21 board meeting (NT-0007)." },
+
+  // Fill to 100 with mix of relevant/irrelevant
+  { id:"NT-0061", type:"Email", date:"2022-10-19", from:"cto@novatech.com", to:"ceo@novatech.com", subject:"Vendor Notification Question", body:`Sandra,\n\nPatricia asked whether we've notified SecureVault per the MSA (24-hr requirement). We have not — scope wasn't confirmed until today.\n\nShe wants to know if you want to hold off until we have a broader notification strategy.\n\nMarcus`, custodian:"Marcus Webb", reviewNote:"CTO flagging that vendor notification (required within 24 hours per NT-0011) has not occurred — and suggesting delay pending 'broader strategy.' Relevant to contract breach and concealment pattern." },
+  { id:"NT-0062", type:"Email", date:"2023-03-10", from:"board@novatech.com (Carla Osei)", to:"legal@hargrovelim.com", subject:"Privileged — Board Chair Inquiry re: D&O Coverage", body:`Patricia,\n\nPrivileged communication.\n\nAs board chair, I need to confirm: is our D&O insurance carrier on notice of the SEC investigation? And do we have adequate coverage given the scope of the potential enforcement action?\n\nCarla Osei\nBoard Chair`, custodian:"Corporate Records", reviewNote:"Privileged — board chair inquiring about D&O insurance coverage for SEC investigation. Relevant to coverage and indemnification issues." },
+  { id:"NT-0063", type:"Email", date:"2022-11-28", from:"marcus.webb@novatech.com", to:"securevault.ceo@securevault.com", subject:"RE: Post-Incident Call", body:`Brian,\n\nGood call last week. To confirm what we discussed: we're treating this as a shared incident with joint response coordination. No separate public statements from SecureVault until we've aligned on messaging.\n\nPatricia's office will send over a draft joint defense agreement.\n\nMarcus`, custodian:"Marcus Webb", reviewNote:"CTO confirms joint defense agreement with vendor. Potentially relevant to whether SecureVault's independent notification obligations were suppressed. Joint defense agreement may affect privilege analysis." },
+  { id:"NT-0064", type:"Email", date:"2022-12-01", from:"finance@novatech.com", to:"raymond.park@novatech.com", subject:"Insurance Claim Filing — Cyber Policy", body:`Raymond,\n\nOur cyber insurance policy requires notification of a claim within 60 days of discovery of a covered incident. We are at Day 48.\n\nDo you want us to file the claim now or wait for further direction from Patricia?\n\nFinance Team`, custodian:"Finance Records", reviewNote:"Finance team flagging 60-day cyber insurance notification deadline. Filing a claim 48 days after discovery implies acknowledgment of breach — in tension with public non-disclosure at the same time." },
+  { id:"NT-0065", type:"Email", date:"2023-01-03", from:"ceo@novatech.com (Sandra Cho)", to:"board@novatech.com", subject:"New Year Message from Sandra", body:`Board Members,\n\nWishing everyone a healthy and prosperous 2023. I'm proud of what we accomplished as a company in 2022 — strong growth, expanded enterprise presence, and a talented team.\n\nLooking forward to what we'll achieve together this year.\n\nSandra`, custodian:"Sandra Cho", reviewNote:"Generic New Year message from CEO. Non-responsive." },
+  { id:"NT-0066", type:"Email", date:"2022-10-22", from:"engineering@novatech.com (Mike Chen)", to:"daniel.marsh@novatech.com", subject:"RE: Incident Protocol", body:`Daniel,\n\nI hear you. This communication blackout is making everyone nervous. A few of us have the same concerns you raised.\n\nBut Marcus was pretty clear. I'm not going to be the one to push back publicly.\n\nMike`, custodian:"Engineering Records", reviewNote:"Engineer expressing agreement with Marsh's compliance concerns but indicating fear of retaliation. Suggests awareness of concerns was broader than just Marsh — relevant to corporate culture and concealment scope." },
+  { id:"NT-0067", type:"Email", date:"2023-02-10", from:"ir@novatech.com", to:"investors@novatech.com", subject:"NovaTech Q4 Earnings — February 14 Webcast", body:`Dear Investor,\n\nNovaTech will report Q4 2022 earnings on February 14, 2023 at 4:30 PM ET. A webcast will be available at investor.novatech.com.\n\nManagement will discuss Q4 results and provide 2023 guidance.`, custodian:"Investor Relations", reviewNote:"Q4 earnings call scheduled for February 14 — the same day as the breach public disclosure. The coordination of these two events is relevant to the disclosure strategy." },
+  { id:"NT-0068", type:"Email", date:"2022-10-14", from:"ceo@novatech.com", to:"cto@novatech.com", subject:"RE: URGENT — got your message", body:`Marcus,\n\nOn my way to the office now. Do not involve anyone else until I get there. Not even internal legal.\n\nSandra`, custodian:"Sandra Cho", reviewNote:"CEO's immediate response to breach notification — instructs CTO not to involve anyone including internal legal. Establishes early decision to control information flow from Day 1." },
+  { id:"NT-0069", type:"Email", date:"2023-03-20", from:"news@wsj.com (WSJ Reporter)", to:"pr@novatech.com", subject:"Request for Comment — NovaTech SEC Investigation", body:`NovaTech Communications Team,\n\nThe Wall Street Journal is preparing an article on the SEC's investigation into NovaTech Solutions. We are requesting comment on the following:\n\n1. When did NovaTech first become aware of the October 2022 breach?\n2. Why was public disclosure delayed 123 days?\n3. Did the January 2023 secondary offering proceed with knowledge of the undisclosed breach?\n\nDeadline for comment: March 22, 5 PM ET.\n\nWSJ Investigations`, custodian:"PR Records", reviewNote:"WSJ media inquiry directly addressing the core allegations. PR's response (or non-response) would be relevant. The questions mirror the SEC's investigation priorities." },
+  { id:"NT-0070", type:"Email", date:"2022-11-03", from:"marcus.webb@novatech.com", to:"ceo@novatech.com", subject:"Earnings Day Check-In", body:`Sandra,\n\nEarnings went well. No questions on the call about operational incidents. Raymond handled the guidance raise cleanly.\n\nWe're in a good position. Nothing has leaked.\n\nMarcus`, custodian:"Marcus Webb", reviewNote:"⚠️ CTO reports to CEO that nothing about the breach 'leaked' on earnings day. 'Nothing has leaked' framing is significant — suggests active monitoring for potential disclosure. Sent same day as Q3 earnings (NT-0008)." },
+  { id:"NT-0071", type:"Email", date:"2022-10-30", from:"legal-internal@novatech.com (GC Office)", to:"ceo@novatech.com", subject:"General Counsel Availability", body:`Sandra,\n\nI wanted to check in — I've noticed I'm not being included in some of the recent executive communications and meetings. Is there anything I can help with from a legal perspective?\n\nBrian Kwan\nGeneral Counsel`, custodian:"Legal Records", reviewNote:"⚠️ In-house General Counsel notices he is being excluded from executive communications and asks why. This corroborates the communication control strategy and suggests even internal GC was kept out of the loop." },
+  { id:"NT-0072", type:"Email", date:"2022-10-31", from:"ceo@novatech.com", to:"legal-internal@novatech.com (Brian Kwan)", subject:"RE: General Counsel Availability", body:`Brian,\n\nAll good — we have a sensitive matter being handled directly by outside counsel at the moment. Nothing you need to worry about.\n\nI'll loop you in when the time is right.\n\nSandra`, custodian:"Sandra Cho", reviewNote:"CEO explicitly tells in-house GC that outside counsel is handling a sensitive matter and he shouldn't worry about it. Confirms intentional exclusion of GC from the breach response." },
+  { id:"NT-0073", type:"Email", date:"2023-01-15", from:"prospectus@bank.com (Underwriter)", to:"raymond.park@novatech.com", subject:"S-3 Effective — Offering Proceeds", body:`Raymond,\n\nPlease be advised that the S-3 registration statement became effective at 8:30 AM this morning. The offering is now live.\n\nWe expect to close Thursday January 19. Gross proceeds approximately $89M.\n\nUnderwriting Team\nFirst National Capital Markets`, custodian:"Finance Records", reviewNote:"S-3 effective notice — offering went live January 15, weeks before breach disclosure. Cross-reference with Patricia's S-3 review (NT-0053) noting the breach was not specifically disclosed." },
+  { id:"NT-0074", type:"Email", date:"2022-12-27", from:"hr@novatech.com (Janet Flores)", to:"executive-team@novatech.com", subject:"Year-End HR Summary", body:`Executive Team,\n\nYear-end HR summary attached. Highlights: headcount at 1,247, attrition at 8.2% (industry average 12%), eNPS score 42.\n\nHappy holidays.\n\nJanet`, custodian:"HR Records", reviewNote:"Year-end HR metrics. Non-responsive." },
+  { id:"NT-0075", type:"Email", date:"2023-04-15", from:"raymond.park@novatech.com", to:"ceo@novatech.com", subject:"Personal — Attorney Advice", body:`Sandra,\n\nMy personal attorney has advised me to stop communicating about matter-related topics on company email. I'm following that advice.\n\nFuture communications on related topics should go through our respective counsel.\n\nRaymond`, custodian:"Raymond Park", reviewNote:"CFO notifies CEO he will no longer discuss related matters on company email per personal counsel's advice. Relevant to the post-Wells Notice period and suggests growing personal legal exposure awareness." },
+  { id:"NT-0076", type:"Email", date:"2022-10-15", from:"daniel.marsh@novatech.com", to:"marcus.webb@novatech.com", subject:"Breach Timeline Question", body:`Marcus,\n\nQuick question on the notification timeline — our MSA with SecureVault requires them to notify us within 24 hours, but I'm wondering about our obligations in the other direction to customers and regulators.\n\nCan you confirm when we plan to notify?\n\nDaniel`, custodian:"Daniel Marsh", reviewNote:"Day 2 — Marsh asks about notification timeline. First instance of Marsh raising compliance questions. CTO's response (if any) would be revealing — this email precedes NT-0005 where Marsh escalates more formally." },
+  { id:"NT-0077", type:"Email", date:"2023-02-14", from:"ceo@novatech.com (Sandra Cho)", to:"board@novatech.com", subject:"Disclosure — Going Out Today", body:`Board,\n\nAs discussed with Patricia, our Q4 earnings call is today at 4:30 PM. The breach disclosure press release will issue at 4:01 PM alongside earnings materials.\n\nPatricia will be on standby.\n\nSandra`, custodian:"Sandra Cho", reviewNote:"CEO notifies board that breach disclosure is being timed with earnings release. The decision to release together is relevant to disclosure strategy — 'burying' the breach announcement with earnings." },
+  { id:"NT-0078", type:"Email", date:"2022-11-18", from:"finance@novatech.com", to:"raymond.park@novatech.com", subject:"Cyber Insurance Claim — Filed", body:`Raymond,\n\nPer your direction, we filed the cyber insurance claim today under Policy No. CYB-2022-4471 with Apex Insurance Group. Claim number assigned: AIG-2022-1847.\n\nEstimated claim value: $12M - $40M depending on scope of notification costs and litigation exposure.\n\nFinance Team`, custodian:"Finance Records", reviewNote:"Cyber insurance claim filed November 18 — 35 days after breach discovery. Company has acknowledged breach to insurer. Insurance claim is relevant to internal acknowledgment of scope and timing." },
+  { id:"NT-0079", type:"Email", date:"2023-05-01", from:"doj@usdoj.gov", to:"legal@hargrovelim.com", subject:"DOJ EDVA — Notification of Criminal Referral", body:`Ms. Hargrove,\n\nThe Securities and Exchange Commission has referred this matter to the Department of Justice, Eastern District of Virginia, for consideration of criminal charges.\n\nYou will receive further communication from AUSA Davidson's office.\n\nDOJ EDVA`, custodian:"Hargrove & Lim LLP", reviewNote:"DOJ criminal referral notice — SEC has referred the matter for potential criminal prosecution. Significant escalation of the matter beyond civil enforcement." },
+  { id:"NT-0080", type:"Email", date:"2022-11-22", from:"marcus.webb@novatech.com", to:"ceo@novatech.com", subject:"Quick Update", body:`Sandra,\n\nDaniel keeps asking about the notification timeline. He's persistent. I've redirected him to Patricia's office but I'm not sure that will hold.\n\nWanted you to be aware.\n\nMarcus`, custodian:"Marcus Webb", reviewNote:"CTO flagging Marsh's persistence to CEO. 'I'm not sure that will hold' suggests awareness that Marsh may escalate. Relevant to the timeline of executive awareness of whistleblower risk." },
+  { id:"NT-0081", type:"Email", date:"2022-10-20", from:"pr@novatech.com", to:"ceo@novatech.com", subject:"Analyst Coverage — Q3 Preview", body:`Sandra,\n\nAnalysts are expecting a strong Q3. JPM and Goldman both have buy ratings. Revenue consensus is $46.8M.\n\nNo unusual questions from the street about operational matters.\n\nLisa`, custodian:"PR Records", reviewNote:"Pre-earnings analyst sentiment report noting no questions about operational matters. Context for market environment around non-disclosure." },
+  { id:"NT-0082", type:"Email", date:"2023-01-25", from:"underwriter@bank.com", to:"raymond.park@novatech.com", subject:"Offering Proceeds — Wire Confirmation", body:`Raymond,\n\nPlease confirm receipt of wire transfer: $82.4M net proceeds from the secondary offering (gross $89M less underwriting discount).\n\nCongratulations on a successful offering.\n\nFirst National Capital Markets`, custodian:"Finance Records", reviewNote:"Wire confirmation of offering proceeds — $82.4M received post-offering. Combined with NT-0014's Scenario B analysis, establishes the financial gain from delayed disclosure." },
+  { id:"NT-0083", type:"Email", date:"2022-10-19", from:"cfo@novatech.com (Raymond Park)", to:"ceo@novatech.com (Sandra Cho)", subject:"Earnings Prep — I Need to Know", body:`Sandra,\n\nI need to know the scope of what Marcus is dealing with before I sign the earnings release. The CFO certification under SOX requires me to represent that there are no material omissions.\n\nI need a full briefing from you and Marcus before I sign anything.\n\nRaymond`, custodian:"Raymond Park", reviewNote:"CFO requests full briefing before signing SOX certification — establishes CFO's awareness that undisclosed information may affect his legal obligations. His subsequent signature on the earnings release without disclosing the breach is significant." },
+  { id:"NT-0084", type:"Email", date:"2022-10-20", from:"ceo@novatech.com", to:"raymond.park@novatech.com", subject:"RE: Earnings Prep", body:`Raymond,\n\nCome to my office at 3 PM. We'll discuss in person. Bring nothing, take nothing.\n\nSandra`, custodian:"Sandra Cho", reviewNote:"CEO's response to CFO's request — 'Bring nothing, take nothing.' Explicit instruction to avoid documentation of the briefing. This is the pattern established in NT-0001 ('no paper trail')." },
+  { id:"NT-0085", type:"Meeting Notes", date:"2022-12-15", from:"ceo@novatech.com", to:"[Executive Team]", subject:"Year-End Executive Strategy Session — Notes", body:`EXECUTIVE TEAM YEAR-END STRATEGY SESSION\nDecember 15, 2022 — Confidential\n\nATTENDANCE: Cho, Park, Webb\n\n2023 PRIORITIES:\n1. Complete secondary offering Q1\n2. Enterprise customer growth targets\n3. Platform scalability investment\n4. [REDACTED — Legal Matter]\n\nNotes prepared by EA. Not for distribution.`, custodian:"Sandra Cho", reviewNote:"Year-end executive strategy session notes with one agenda item redacted. The redaction itself is notable in the context of this review — what is the redacted legal matter? May require production decision." },
+  { id:"NT-0086", type:"Email", date:"2023-03-22", from:"pr@novatech.com", to:"wsj@wsj.com", subject:"RE: NovaTech Comment Request", body:`On behalf of NovaTech Solutions:\n\n"NovaTech takes its legal and regulatory obligations seriously and is cooperating fully with the SEC's inquiry. We are unable to comment further on pending regulatory matters.\n\nWe remain committed to the security of our customers' data and the trust of our investors."\n\nNovaTech Communications`, custodian:"PR Records", reviewNote:"Company's non-comment response to WSJ inquiry. Standard PR response, but the framing — 'cooperating fully' — may be cross-referenced with specific documents showing non-cooperation or document destruction concerns." },
+  { id:"NT-0087", type:"Email", date:"2023-02-16", from:"customers@classaction.law", to:"legal@hargrovelim.com", subject:"Notice of Representation — Class Action", body:`Ms. Hargrove,\n\nPlease be advised that our firm represents a putative class of NovaTech shareholders. We intend to file a class action complaint within 30 days.\n\nWe are prepared to discuss pre-suit mediation if NovaTech has interest.\n\nClass Action Counsel`, custodian:"Hargrove & Lim LLP", reviewNote:"Early class action representation notice — two days after breach disclosure. Speed of class action filing is typical in securities fraud cases." },
+  { id:"NT-0088", type:"Email", date:"2022-10-14", from:"marcus.webb@novatech.com", to:"ceo@novatech.com", subject:"Calling you now", body:`Sandra — calling your cell now. Do not reply to this email.`, custodian:"Marcus Webb", reviewNote:"The very first communication after breach discovery — CTO instructs CEO not to reply to email, establishing phone-only communication from initial disclosure. Part of the 'no paper trail' pattern." },
+  { id:"NT-0089", type:"Email", date:"2023-02-14", from:"investors@novatech.com", to:"ir@novatech.com", subject:"RE: Q4 Earnings — Investor Questions", body:`[AUTO-COMPILED INVESTOR INQUIRIES — EARNINGS CALL Q&A]\n\nQ: Why is the breach being announced today? Was this timed with earnings?\nA [CEO Cho]: The timing reflects our thorough process of assessing the scope of the incident and our obligations under applicable law.\n\nQ: When did the company first learn of this incident?\nA [CEO Cho]: We became aware of an incident in Q4 2022 and have been working with outside counsel since that time.\n\nQ: Did the S-3 offering in January proceed with knowledge of this incident?\nA [CEO Cho]: All of our public filings were prepared in accordance with applicable securities laws with advice of counsel.`, custodian:"Investor Relations", reviewNote:"⚠️ CEO's public statements on earnings call. Her answer — 'became aware of an incident in Q4 2022' — is technically true but potentially misleading given NT-0001 (breach discovered October 14 = Q4). The S-3 answer directly implicates NT-0053." },
+  { id:"NT-0090", type:"Email", date:"2022-10-14", from:"infosec@novatech.com", to:"marcus.webb@novatech.com", subject:"ALERT CONFIRMED — Initiating Response", body:`Marcus,\n\nAlert confirmed as genuine breach event. Not a false positive.\n\nInitiating incident response protocol. Team assembled.\n\nStatus: ACTIVE BREACH — CONTAINMENT IN PROGRESS\n\nTime of first alert: 02:14 AM\nTime of confirmation: 06:47 AM\n\nWaiting for your direction on notification protocol.\n\nInfoSec Lead`, custodian:"IT Records", reviewNote:"Breach confirmation email from InfoSec team — 'Waiting for your direction on notification protocol' establishes that the decision to notify (or not) was the CTO's explicit call from the start." },
+  { id:"NT-0091", type:"Email", date:"2022-12-22", from:"hr@novatech.com", to:"daniel.marsh@novatech.com", subject:"Performance Improvement Plan — December 27 Meeting", body:`Daniel,\n\nAttached please find a Performance Improvement Plan (PIP) for your review prior to our December 27 meeting. The PIP identifies concerns regarding executive communication, team leadership, and strategic alignment.\n\nPlease review and come prepared to discuss.\n\nJanet Flores\nHuman Resources`, custodian:"HR Records", reviewNote:"PIP issued to Marsh — 5 weeks after his SEC submission. The specific PIP categories ('executive communication') are notable given the context of Marsh's compliance objections." },
+  { id:"NT-0092", type:"Email", date:"2023-01-30", from:"ceo@novatech.com", to:"board@novatech.com", subject:"Offering Closed — Thank You", body:`Board,\n\nPlease be advised the secondary offering closed successfully on January 19 with gross proceeds of $89M. This is a tremendous outcome for NovaTech and our shareholders.\n\nThank you for your continued support and guidance.\n\nSandra`, custodian:"Sandra Cho", reviewNote:"CEO's post-offering notification to board. Sent while breach remained undisclosed to the public. Board received this without any mention of the ongoing disclosure timeline issue — despite the October and December board discussions." },
+  { id:"NT-0093", type:"Email", date:"2022-11-30", from:"audit@kpmg.com", to:"raymond.park@novatech.com", subject:"Year-End Audit Planning — Material Items", body:`Raymond,\n\nAs we prepare for the year-end audit, we want to flag that any cybersecurity incidents during the fiscal year should be disclosed to us per our engagement letter requirements.\n\nPlease confirm whether any material security incidents occurred in Q4 2022.\n\nKPMG Audit Team`, custodian:"Finance Records", reviewNote:"External auditor explicitly asks about Q4 cybersecurity incidents. CFO's response to this inquiry (not in the document set) is highly relevant — withholding this information from auditors could constitute audit obstruction." },
+  { id:"NT-0094", type:"Email", date:"2022-12-05", from:"raymond.park@novatech.com", to:"audit@kpmg.com", subject:"RE: Year-End Audit Planning", body:`KPMG Team,\n\nThank you for your planning note. We are not aware of any material cybersecurity incidents in Q4 2022 at this time.\n\nWe will supplement if circumstances change.\n\nRaymond Park\nCFO, NovaTech Solutions`, custodian:"Raymond Park", reviewNote:"⚠️ CFO tells external auditors there are no material cybersecurity incidents in Q4 2022 — while the 2.3M record breach was confirmed on October 17. This response to auditors may constitute securities fraud and potentially obstruction." },
+  { id:"NT-0095", type:"Email", date:"2023-04-20", from:"marcus.webb@novatech.com", to:"personal@marcuswebb.com", subject:"Personal Note", body:`[Forwarded to personal email]\n\nI need to think seriously about whether my current cooperation with the company's legal strategy is in my personal interest.\n\nThe Wells Notice named Sandra and Raymond. Not me. Patricia represents the company — not me personally. I should call Mike Greenberg.\n\nMarcus`, custodian:"Marcus Webb", reviewNote:"CTO forwarding personal note to himself — expressing concern about whether company counsel represents his personal interests and considering personal counsel. Sent after Wells Notice named CEO and CFO but not CTO. Relevant to potential cooperation." },
+  { id:"NT-0096", type:"Email", date:"2022-10-16", from:"cto@novatech.com", to:"legal@hargrovelim.com", subject:"Referral — Breach Response", body:`Patricia,\n\nSandra asked me to reach out directly. We have a situation that needs legal guidance urgently. Can you call me on my cell in the next hour?\n\nDo not call the main NovaTech number. Use my cell: [REDACTED]\n\nMarcus Webb\nCTO, NovaTech Solutions`, custodian:"Marcus Webb", reviewNote:"Initial outreach to outside counsel — 'do not call the main NovaTech number' is consistent with the communication control pattern. Establishes the start of the attorney-client relationship for this matter." },
+  { id:"NT-0097", type:"Email", date:"2023-06-15", from:"doj@usdoj.gov", to:"legal@hargrovelim.com", subject:"Proffer Agreement — Marcus Webb", body:`Ms. Hargrove,\n\nPlease be advised that former NovaTech CTO Marcus Webb, through his counsel Michael Greenberg, has entered into a proffer agreement with the Department of Justice.\n\nMr. Webb will provide information to DOJ prosecutors in connection with the NovaTech investigation.\n\nAUSA Davidson\nEastern District of Virginia`, custodian:"Hargrove & Lim LLP", reviewNote:"⚠️ CTO has entered a proffer agreement with DOJ — cooperating with federal prosecutors. This is the final significant development, suggesting Marcus Webb is cooperating against Cho and Park. Critical for case strategy." },
+  { id:"NT-0098", type:"Email", date:"2022-10-18", from:"legal-internal@novatech.com (Brian Kwan)", to:"ceo@novatech.com", subject:"I need to speak with you today", body:`Sandra,\n\nI need to speak with you today urgently. I've heard through channels that there may be a significant incident underway that I have not been briefed on.\n\nAs General Counsel, I have an independent professional obligation regarding disclosure and compliance. I need to be involved.\n\nBrian Kwan\nGeneral Counsel`, custodian:"Legal Records", reviewNote:"In-house GC escalates after hearing rumors of breach — explicitly cites his independent professional obligation. This is 4 days into the breach and 2 days after outside counsel was retained. His exclusion despite this request is significant." },
+  { id:"NT-0099", type:"Email", date:"2022-10-19", from:"ceo@novatech.com", to:"legal-internal@novatech.com (Brian Kwan)", subject:"RE: I need to speak with you", body:`Brian,\n\nLet's grab lunch Thursday. I'll explain everything then.\n\nSandra`, custodian:"Sandra Cho", reviewNote:"CEO deflects GC's urgent request with a casual 'lunch Thursday' response — five days after breach discovery. The casual deferral in the face of a GC's professional obligation claim is notable." },
+  { id:"NT-0100", type:"Email", date:"2023-07-01", from:"legal@hargrovelim.com (Patricia Hargrove)", to:"ceo@novatech.com (Sandra Cho)", subject:"Privileged — Settlement Discussion", body:`Sandra —\n\nPrivileged & Confidential — Attorney-Client Communication\n\nFollowing the proffer agreement with Marcus Webb, my assessment of litigation exposure has changed significantly. I need to discuss settlement options with you as a matter of urgency.\n\nThe DOJ's interest combined with the SEC Wells Notice and the class action creates a constellation of exposure that, in my professional judgment, makes early resolution the most prudent path.\n\nPlease call me on my direct line today.\n\nPatricia`, custodian:"Hargrove & Lim LLP", reviewNote:"Privileged — outside counsel recommending settlement discussions following CTO's cooperation agreement. The final document in the review set — reflects the full arc from breach discovery to potential resolution." }
+];
+
+// State
+let state = {
+  currentIdx: 0,
+  filter: 'all',
+  search: '',
+  decisions: {}
+};
+
+function startReview() {
+  document.getElementById('landing').classList.remove('active');
+  document.getElementById('review').classList.add('active');
+  renderDocList();
+  loadDoc(0);
+}
+
+function goReport() {
+  document.getElementById('review').classList.remove('active');
+  document.getElementById('report').classList.add('active');
+  buildReport();
+}
+
+function goReview() {
+  document.getElementById('report').classList.remove('active');
+  document.getElementById('review').classList.add('active');
+}
+
+function getFilteredDocs() {
+  return DOCS.filter(d => {
+    const s = state.search.toLowerCase();
+    const matchSearch = !s || d.subject.toLowerCase().includes(s) || d.from.toLowerCase().includes(s) || d.id.toLowerCase().includes(s);
+    const dec = state.decisions[d.id] || {};
+    if (state.filter === 'uncoded') return matchSearch && !dec.code;
+    if (state.filter === 'hot') return matchSearch && dec.code === 'Hot Document';
+    if (state.filter === 'priv') return matchSearch && (dec.code === 'Privileged' || dec.code === 'Potentially Privileged');
+    return matchSearch;
+  });
+}
+
+function renderDocList() {
+  const list = document.getElementById('doc-list');
+  const filtered = getFilteredDocs();
+  list.innerHTML = filtered.map((doc, i) => {
+    const dec = state.decisions[doc.id] || {};
+    const tagEl = dec.code ? `<span class="doc-item-tag" style="${getCodeStyle(dec.code)}">${dec.code.replace('Non-Responsive','NR').replace('Responsive','RESP').replace('Privileged','PRIV').replace('Potentially Privileged','POT.PRIV').replace('Hot Document','HOT').replace('Confidential','CONF')}</span>` : '';
+    const isActive = DOCS[state.currentIdx]?.id === doc.id ? 'active' : '';
+    return `<div class="doc-item ${isActive}" onclick="loadDocById('${doc.id}')">
+      <div class="doc-item-id">${doc.id}</div>
+      <div class="doc-item-subject">${doc.subject}</div>
+      <div class="doc-item-meta"><span class="doc-item-type">${doc.type} · ${doc.date}</span>${tagEl}</div>
+    </div>`;
+  }).join('');
+}
+
+function getCodeStyle(code) {
+  const styles = {
+    'Responsive': 'background:#052e16;color:#22c55e',
+    'Non-Responsive': 'background:#1e293b;color:#64748b',
+    'Privileged': 'background:#1e0a2e;color:#a855f7',
+    'Potentially Privileged': 'background:#1e0a2e;color:#c084fc',
+    'Hot Document': 'background:#2d0a0a;color:#ef4444',
+    'Confidential': 'background:#2d1a00;color:#f59e0b',
+  };
+  return styles[code] || '';
+}
+
+function loadDoc(idx) {
+  state.currentIdx = idx;
+  const doc = DOCS[idx];
+  if (!doc) return;
+  const dec = state.decisions[doc.id] || {};
+
+  // Render viewer
+  const viewer = document.getElementById('doc-viewer');
+  viewer.innerHTML = `
+    <div class="doc-header-card">
+      <div class="doc-type-badge">${doc.type} · ${doc.custodian}</div>
+      <div class="doc-title">${doc.subject}</div>
+      <div class="doc-fields">
+        <div class="doc-field"><div class="doc-field-label">Doc ID</div><div class="doc-field-val" style="font-family:var(--mono)">${doc.id}</div></div>
+        <div class="doc-field"><div class="doc-field-label">Date</div><div class="doc-field-val">${doc.date}</div></div>
+        <div class="doc-field"><div class="doc-field-label">From</div><div class="doc-field-val">${doc.from}</div></div>
+        <div class="doc-field"><div class="doc-field-label">To</div><div class="doc-field-val">${doc.to}</div></div>
+      </div>
+    </div>
+    ${doc.reviewNote ? `<div class="review-note"><strong>⚡ Reviewer Note:</strong> ${doc.reviewNote}</div>` : ''}
+    <div class="doc-body-card">
+      <div class="doc-body">${doc.body}</div>
+    </div>
+    ${dec.tags && dec.tags.length ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:0">${dec.tags.map(t=>`<span style="font-size:11px;background:#1e1240;color:#a5b4fc;border-radius:20px;padding:4px 12px">${t}</span>`).join('')}</div>` : ''}
+  `;
+
+  // Update coding buttons
+  const codes = ['Responsive','Non-Responsive','Privileged','Potentially Privileged','Hot Document','Confidential'];
+  const colors = {
+    'Responsive':['#22c55e','#052e16'],
+    'Non-Responsive':['#64748b','#1e293b'],
+    'Privileged':['#a855f7','#1e0a2e'],
+    'Potentially Privileged':['#c084fc','#1e0a2e'],
+    'Hot Document':['#ef4444','#2d0a0a'],
+    'Confidential':['#f59e0b','#2d1a00'],
+  };
+  codes.forEach(c => {
+    const btn = document.getElementById('btn-'+c);
+    if (!btn) return;
+    btn.classList.remove('selected');
+    btn.style.borderColor = '';
+    btn.style.background = '';
+    btn.style.color = '';
+    const active = (dec.resp === c || dec.desig === c);
+    if (active) {
+      btn.classList.add('selected');
+      btn.style.borderColor = colors[c][0];
+      btn.style.background = colors[c][1];
+      btn.style.color = colors[c][0];
+    }
+  });
+
+  const tags = dec.tags || [];
+  document.querySelectorAll('.tag-btn').forEach(btn => {
+    const t = btn.id.replace('tag-','');
+    if (tags.includes(t)) { btn.classList.add('selected'); btn.textContent = '✓ '+t; }
+    else { btn.classList.remove('selected'); btn.textContent = '+ '+t; }
+  });
+
+  updateProgress();
+  renderDocList();
+}
+
+function loadDocById(id) {
+  const idx = DOCS.findIndex(d => d.id === id);
+  if (idx >= 0) loadDoc(idx);
+}
+
+function setCode(code) {
+  const doc = DOCS[state.currentIdx];
+  if (!doc) return;
+  const dec = state.decisions[doc.id] || { tags: [] };
+  const responsiveness = ['Responsive','Non-Responsive'];
+  const special = ['Hot Document','Privileged','Potentially Privileged','Confidential'];
+  if (responsiveness.includes(code)) {
+    dec.resp = dec.resp === code ? null : code;
+  } else if (special.includes(code)) {
+    dec.desig = dec.desig === code ? null : code;
+  }
+  dec.code = dec.desig || dec.resp || null;
+  state.decisions[doc.id] = dec;
+  loadDoc(state.currentIdx);
+  updateStats();
+}
+
+function toggleTag(tag) {
+  const doc = DOCS[state.currentIdx];
+  if (!doc) return;
+  const dec = state.decisions[doc.id] || { tags: [] };
+  if (!dec.tags) dec.tags = [];
+  const i = dec.tags.indexOf(tag);
+  if (i >= 0) dec.tags.splice(i, 1);
+  else dec.tags.push(tag);
+  state.decisions[doc.id] = dec;
+  loadDoc(state.currentIdx);
+}
+
+function saveDoc() {
+  showToast('Decision saved');
+  nextDoc();
+}
+
+function nextDoc() {
+  if (state.currentIdx < DOCS.length - 1) loadDoc(state.currentIdx + 1);
+}
+
+function prevDoc() {
+  if (state.currentIdx > 0) loadDoc(state.currentIdx - 1);
+}
+
+function filterDocs(val) {
+  state.search = val;
+  renderDocList();
+}
+
+function setFilter(f, btn) {
+  state.filter = f;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDocList();
+}
+
+function updateProgress() {
+  const coded = Object.values(state.decisions).filter(d => d.code).length;
+  const pct = Math.round((coded / DOCS.length) * 100);
+  document.getElementById('prog-text').textContent = `${coded} / ${DOCS.length}`;
+  document.getElementById('prog-fill').style.width = pct + '%';
+}
+
+function updateStats() {
+  const decs = Object.values(state.decisions);
+  document.getElementById('stat-r').textContent = decs.filter(d=>d.resp==='Responsive'||d.code==='Responsive').length;
+  document.getElementById('stat-nr').textContent = decs.filter(d=>d.resp==='Non-Responsive'||d.code==='Non-Responsive').length;
+  document.getElementById('stat-p').textContent = decs.filter(d=>d.desig==='Privileged'||d.desig==='Potentially Privileged'||d.code==='Privileged'||d.code==='Potentially Privileged').length;
+  document.getElementById('stat-h').textContent = decs.filter(d=>d.desig==='Hot Document'||d.code==='Hot Document').length;
+  document.getElementById('stat-c').textContent = decs.filter(d=>d.desig==='Confidential'||d.code==='Confidential').length;
+  document.getElementById('stat-u').textContent = DOCS.length - decs.filter(d=>d.resp||d.desig||d.code).length;
+  updateProgress();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+function buildReport() {
+  document.getElementById('report-date').textContent = `Generated: ${new Date().toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'})} · Reviewer: [Your Name] · Matter: HO-14472`;
+
+  const decs = state.decisions;
+  const all = DOCS;
+  const coded = all.filter(d => decs[d.id]?.code);
+  const resp = all.filter(d => decs[d.id]?.code === 'Responsive');
+  const nr = all.filter(d => decs[d.id]?.code === 'Non-Responsive');
+  const priv = all.filter(d => decs[d.id]?.code === 'Privileged');
+  const potpriv = all.filter(d => decs[d.id]?.code === 'Potentially Privileged');
+  const hot = all.filter(d => decs[d.id]?.code === 'Hot Document');
+  const conf = all.filter(d => decs[d.id]?.code === 'Confidential');
+  const uncoded = all.filter(d => !decs[d.id]?.code);
+
+  // Stats cards
+  document.getElementById('report-stats').innerHTML = [
+    ['100', 'Total Documents', '#e2e8f0'],
+    [coded.length, 'Documents Coded', '#818cf8'],
+    [hot.length, 'Hot Documents', '#ef4444'],
+    [(priv.length+potpriv.length), 'Privileged', '#a855f7'],
+  ].map(([v,l,c]) => `<div class="stat-card"><div class="stat-val" style="color:${c}">${v}</div><div class="stat-label">${l}</div></div>`).join('');
+
+  // Coding table
+  document.getElementById('report-coding-table').innerHTML = [
+    ['Responsive', resp.length, '#22c55e', 'Documents relevant to the SEC investigation and litigation matter'],
+    ['Non-Responsive', nr.length, '#64748b', 'Documents outside the scope of the review parameters'],
+    ['Privileged', priv.length, '#a855f7', 'Attorney-client privilege or attorney work product protected'],
+    ['Potentially Privileged', potpriv.length, '#c084fc', 'Privilege claim requires senior review determination'],
+    ['Hot Document', hot.length, '#ef4444', 'Key exhibits — high evidentiary significance'],
+    ['Confidential', conf.length, '#f59e0b', 'Business sensitive — protective order designation recommended'],
+    ['Uncoded / Pending', uncoded.length, '#475569', 'Awaiting review decision'],
+  ].map(([cat, cnt, color, note]) => `<tr><td><strong style="color:${color}">${cat}</strong></td><td style="font-family:var(--mono);font-weight:600">${cnt}</td><td style="font-family:var(--mono)">${cnt > 0 ? Math.round(cnt/100*100) : 0}%</td><td>${note}</td></tr>`).join('');
+
+  // Privilege log
+  const privDocs = [...priv, ...potpriv];
+  document.getElementById('report-priv-table').innerHTML = privDocs.length ?
+    privDocs.map(d => {
+      const basis = decs[d.id]?.code === 'Privileged' ? 'Attorney-Client Privilege / Work Product' : 'Potentially Privileged — Senior Review Required';
+      const desc = d.subject;
+      return `<tr><td style="font-family:var(--mono);color:var(--accent2)">${d.id}</td><td>${d.date}</td><td>${d.from.split('(')[1]?.replace(')','') || d.from}</td><td>${basis}</td><td>${desc}</td></tr>`;
+    }).join('') :
+    '<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:20px">No documents coded as privileged yet</td></tr>';
+
+  // Hot docs
+  const hotDocs = hot;
+  document.getElementById('report-hot-docs').innerHTML = hotDocs.length ?
+    hotDocs.map(d => `
+      <div class="finding-card finding-hot">
+        <h4>${d.id} — ${d.subject}</h4>
+        <p><strong style="color:var(--muted)">Date:</strong> ${d.date} &nbsp;|&nbsp; <strong style="color:var(--muted)">Author:</strong> ${d.from}</p>
+        <p style="margin-top:8px">${d.reviewNote || 'Key document identified during review.'}</p>
+      </div>`) .join('') :
+    '<div class="finding-card"><p style="color:var(--muted)">No hot documents coded yet. Review your document set for key exhibits.</p></div>';
+
+  // Tags
+  const allTags = ['Contract Dispute','Financial Issues','Executive Communications','Employee Conduct','Regulatory Concerns','Data Security','Internal Investigation'];
+  document.getElementById('report-tags-table').innerHTML = allTags.map(tag => {
+    const cnt = all.filter(d => decs[d.id]?.tags?.includes(tag)).length;
+    return `<tr><td>${tag}</td><td style="font-family:var(--mono);font-weight:600;color:var(--accent2)">${cnt}</td></tr>`;
+  }).join('');
+
+  // QC
+  document.getElementById('report-qc').innerHTML = `
+    <div class="finding-card finding-key">
+      <h4>QC Check 1 — Privilege Log Completeness</h4>
+      <p>All documents with attorney names in From/To fields were reviewed for privilege assertions. Documents prepared "at the direction of outside counsel" (NT-0029) require independent privilege verification. Recommend senior attorney review of NT-0029, NT-0024, NT-0053 privilege claims before production.</p>
+    </div>
+    <div class="finding-card finding-key">
+      <h4>QC Check 2 — Coding Consistency Review</h4>
+      <p>Documents NT-0002, NT-0020, NT-0070, NT-0049 are borderline responsive — CEO/executive communications that reference the incident indirectly. These were reviewed for consistency with responsiveness standards. Recommend second-level review of all borderline documents before production.</p>
+    </div>
+    <div class="finding-card finding-key">
+      <h4>QC Check 3 — Duplicate/Family Detection</h4>
+      <p>NT-0029 (Technical Report) and NT-0036 (Hargrove direction email creating privilege) are document family members — both should receive the same privilege designation. NT-0007 (Board Minutes) and NT-0044 (Sandra Cho personal notes re: same meeting) should be reviewed together. Email chains NT-0005/NT-0006 and NT-0083/NT-0084 are chain families.</p>
+    </div>
+    <div class="finding-card" style="border-left:3px solid var(--red)">
+      <h4>QC Flag — Potential Redaction Required <span class="qc-flag">ACTION REQUIRED</span></h4>
+      <p>NT-0060 contains full breach scope numbers. NT-0029 contains SSN confirmation for 44,200 enterprise customers. NT-0085 contains a redaction in the original document that must be logged. These documents require redaction review before production to any party other than SEC enforcement under subpoena.</p>
+    </div>`;
+
+  // Exec summary
+  document.getElementById('report-exec').innerHTML = `
+    <p>This document review was conducted in connection with <em>In re NovaTech Solutions, Inc.</em>, SEC File No. HO-14472, involving allegations of securities fraud, unlawful delay of breach notification, and whistleblower retaliation against former VP of Engineering Daniel Marsh.</p>
+    <p>The review covered 100 documents spanning October 14, 2022 through July 1, 2023, produced from eight custodians including CEO Sandra Cho, CTO Marcus Webb, CFO Raymond Park, outside counsel Patricia Hargrove, and whistleblower Daniel Marsh.</p>
+    <p><strong style="color:var(--text)">Key Findings:</strong> The document set establishes a timeline in which (1) NovaTech confirmed a 2.3M-record breach on October 17, 2022 (NT-0060); (2) executive leadership established communication controls specifically to limit written documentation of the incident (NT-0001, NT-0004, NT-0041, NT-0084, NT-0088); (3) Q3 earnings were released without disclosure on November 3, 2022 (NT-0008, NT-0070); (4) a secondary stock offering raising $89M was completed on January 19, 2023 (NT-0015, NT-0073, NT-0082) while an internal financial model had identified delayed disclosure as the optimal strategy for protecting offering proceeds (NT-0014); (5) public disclosure occurred 123 days after breach discovery on February 14, 2023 (NT-0016); and (6) a performance improvement plan was initiated against the whistleblower within weeks of his SEC submission (NT-0010, NT-0091).</p>
+    <p><strong style="color:var(--text)">Privilege Issues:</strong> Outside counsel Patricia Hargrove's communications present complex privilege considerations. Several documents suggest her advice has been mischaracterized by clients (NT-0013 vs. NT-0012), and her S-3 review memorandum (NT-0053) may be relevant to the advice-of-counsel defense. Senior privilege review is recommended before any production decisions are finalized.</p>
+    <p><strong style="color:var(--text)">Cooperation Developments:</strong> CTO Marcus Webb entered a proffer agreement with DOJ prosecutors (NT-0097), significantly changing the litigation landscape. His cooperation may result in additional documents or testimony that supplements this review set.</p>
+    <p><strong style="color:var(--text)">Production Recommendation:</strong> Responsive, non-privileged documents are ready for first-level production review. Privileged documents require senior attorney review. Hot documents should be flagged for litigation team priority review. Recommend supplemental search for any verbal communications documented in writing, given the pattern of intentional off-email communication established in this document set.</p>`;
+}
+
+// Init
+document.getElementById('report-date').textContent = new Date().toLocaleDateString();
+</script>
+
+
+</body></html>

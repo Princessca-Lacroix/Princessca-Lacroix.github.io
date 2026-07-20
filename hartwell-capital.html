@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<!-- saved from url=(0063)file:///Users/princesscalacroix/Downloads/hartwell-capital.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hartwell Capital Management — Relativity Search &amp; Review Strategy</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#0D0D0F;color:#E0E0E8;min-height:100vh}
+
+/* LANDING */
+#landing{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;text-align:center;background:linear-gradient(160deg,#0D0D0F 60%,#0D1A2A)}
+.landing-sub{font-size:13px;letter-spacing:0.12em;text-transform:uppercase;color:#4A7A9B;margin-bottom:1.5rem}
+.landing-title{font-size:clamp(26px,4vw,48px);font-weight:700;line-height:1.15;margin-bottom:0.5rem}
+.landing-title span{color:#4A9ECC}
+.landing-desc{font-size:14px;color:#8888AA;margin-bottom:2.5rem;max-width:560px;line-height:1.7}
+.stats-row{display:flex;gap:2rem;justify-content:center;margin-bottom:2.5rem;flex-wrap:wrap}
+.stat{text-align:center}
+.stat-n{font-size:30px;font-weight:700;color:#4A9ECC}
+.stat-l{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#4A6A8A;margin-top:2px}
+.matter-card{background:#0F1A24;border:1px solid #1E3040;border-radius:14px;padding:1.5rem;max-width:680px;width:100%;text-align:left;margin-bottom:2rem}
+.matter-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#4A9ECC;margin-bottom:10px}
+.matter-text{font-size:13px;color:#8899AA;line-height:1.75;margin-bottom:1rem}
+.parties{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.party{background:#0D1822;border:1px solid #1E3040;border-radius:8px;padding:10px 12px}
+.party-role{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#4A6A8A;margin-bottom:4px}
+.party-name{font-size:13px;font-weight:600;color:#C0D0E0}
+.party-sub{font-size:11px;color:#5A7A9A;margin-top:2px}
+.start-btn{background:#1A5A8A;color:#fff;border:none;padding:14px 36px;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer}
+.start-btn:hover{background:#1A4A7A}
+
+/* TOP BAR */
+#app{display:none;min-height:100vh;flex-direction:column}
+.top-bar{background:#080E14;border-bottom:1px solid #1A2A3A;padding:0 1rem;height:48px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;position:sticky;top:0;z-index:50}
+.rel-badge{background:#1A5A8A;color:#fff;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;letter-spacing:0.05em}
+.top-matter{font-size:12px;color:#4A6A8A}
+.top-tabs{display:flex;gap:2px}
+.ttab{padding:6px 14px;font-size:12px;font-weight:500;background:transparent;border:none;color:#5A7A9A;cursor:pointer;border-bottom:2px solid transparent}
+.ttab.active{color:#4A9ECC;border-bottom-color:#4A9ECC}
+.report-btn{background:#1A5A8A;color:#fff;border:none;padding:6px 14px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer}
+
+/* TABS */
+.tab-content{display:none;flex:1}
+.tab-content.active{display:block}
+
+/* SEARCH BUILDER */
+.search-wrap{max-width:960px;margin:0 auto;padding:2rem}
+.sw-title{font-size:20px;font-weight:700;color:#C0D0E0;margin-bottom:4px}
+.sw-sub{font-size:13px;color:#5A7A9A;margin-bottom:2rem}
+.search-table{width:100%;border-collapse:collapse;margin-bottom:1.5rem}
+.search-table th{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#4A6A8A;padding:8px 12px;text-align:left;background:#0A1420;border-bottom:1px solid #1A2A3A}
+.search-table td{padding:10px 12px;border-bottom:1px solid #111E2A;vertical-align:top}
+.search-num{font-size:12px;color:#4A6A8A;font-weight:600}
+.search-name{font-size:13px;font-weight:600;color:#C0D0E0;margin-bottom:2px}
+.search-query{font-family:'Courier New',monospace;font-size:11px;color:#4ACCAA;background:#071018;padding:6px 10px;border-radius:6px;margin:4px 0;word-break:break-all}
+.search-hits{font-size:12px;color:#4A9ECC;font-weight:600}
+.search-note{font-size:11px;color:#5A7A9A;margin-top:2px}
+.run-btn{font-size:11px;padding:4px 12px;background:#1A3A5A;border:1px solid #2A5A8A;color:#4A9ECC;border-radius:4px;cursor:pointer}
+.run-btn.ran{background:#0A2A3A;color:#2A7AAA}
+.hits-badge{display:inline-block;font-size:11px;padding:2px 8px;background:#0A2030;border:1px solid #1A4060;border-radius:4px;color:#4A9ECC}
+.section-card{background:#0F1A24;border:1px solid #1A2A3A;border-radius:12px;padding:1.25rem;margin-bottom:1.25rem}
+.section-card-title{font-size:13px;font-weight:700;color:#4A9ECC;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.06em;font-size:10px}
+.add-search-btn{width:100%;padding:10px;background:transparent;border:1px dashed #2A4A6A;color:#4A7A9A;border-radius:8px;cursor:pointer;font-size:13px;margin-top:8px}
+.add-search-btn:hover{background:#0A1820;border-color:#4A9ECC;color:#4A9ECC}
+
+/* REVIEW QUEUE */
+.review-wrap{display:flex;height:calc(100vh - 48px)}
+.rev-sidebar{width:260px;background:#080E14;border-right:1px solid #1A2A3A;display:flex;flex-direction:column;flex-shrink:0}
+.rev-sidebar-hdr{padding:10px 12px;border-bottom:1px solid #1A2A3A}
+.rev-sidebar-title{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#4A6A8A;margin-bottom:8px}
+.rev-search{width:100%;background:#0D1822;border:1px solid #1A2A3A;border-radius:6px;padding:6px 10px;font-size:12px;color:#C0D0E0;outline:none}
+.rev-search::placeholder{color:#3A5A7A}
+.rev-filters{display:flex;gap:4px;margin-top:8px;flex-wrap:wrap}
+.rfilt{padding:3px 8px;border-radius:4px;font-size:10px;font-weight:500;cursor:pointer;border:1px solid #1A2A3A;background:transparent;color:#5A7A9A}
+.rfilt.active{background:#1A3A5A;color:#4A9ECC;border-color:#2A5A8A}
+.rev-list{flex:1;overflow-y:auto}
+.rev-item{padding:10px 12px;border-bottom:1px solid #0D1622;cursor:pointer}
+.rev-item:hover{background:#0D1822}
+.rev-item.active{background:#0F2030;border-left:2px solid #4A9ECC}
+.rev-id{font-size:10px;color:#4A6A8A;margin-bottom:2px}
+.rev-title{font-size:12px;font-weight:500;color:#AABCCC;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rev-meta{font-size:11px;color:#3A5A7A;margin-top:2px}
+.rev-tags{display:flex;gap:3px;margin-top:4px;flex-wrap:wrap}
+.rtag{font-size:9px;padding:1px 6px;border-radius:3px;font-weight:500}
+.rtag.r{background:#0A2A1A;color:#4ACC88}
+.rtag.nr{background:#1A1A1A;color:#666666}
+.rtag.p{background:#1A0A2A;color:#8866CC}
+.rtag.h{background:#2A0A0A;color:#CC6644}
+.rtag.mnpi{background:#2A1A0A;color:#CC9944}
+
+/* DOC VIEWER */
+.rev-viewer{flex:1;display:flex;flex-direction:column;overflow:hidden;background:#0B1520}
+.rev-doc-hdr{padding:12px 16px;border-bottom:1px solid #1A2A3A;background:#080E14}
+.rev-doc-type{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:#4A6A8A;margin-bottom:4px}
+.rev-doc-subject{font-size:17px;font-weight:700;color:#C8D8E8;margin-bottom:10px}
+.rev-doc-fields{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rev-doc-field label{font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:#3A5A7A;display:block;margin-bottom:2px}
+.rev-doc-field span{font-size:12px;color:#7A9AB0}
+.rev-note{background:#1A2A0A;border:1px solid #2A4A0A;border-radius:6px;padding:10px 12px;margin:10px 16px;font-size:12px;color:#88BB44;line-height:1.6}
+.rev-note strong{color:#AADA66}
+.mnpi-note{background:#2A1A0A;border:1px solid #4A3A0A;border-radius:6px;padding:10px 12px;margin:0 16px 10px;font-size:12px;color:#CCAA44;line-height:1.6}
+.rev-body{flex:1;overflow-y:auto;padding:16px}
+.rev-content{background:#0D1822;border:1px solid #1A2A3A;border-radius:8px;padding:16px;font-size:13px;color:#8899AA;line-height:1.8;white-space:pre-wrap;min-height:200px}
+
+/* CODING */
+.rev-coding{width:210px;background:#080E14;border-left:1px solid #1A2A3A;overflow-y:auto;flex-shrink:0}
+.rp-section{padding:12px}
+.rp-section+.rp-section{border-top:1px solid #111E2A}
+.rp-label{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#3A5A7A;margin-bottom:8px}
+.rp-btn{width:100%;padding:7px 10px;border-radius:6px;border:1px solid #1A2A3A;background:transparent;color:#7A9AB0;font-size:11px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:7px;margin-bottom:5px;text-align:left}
+.rp-btn:hover{background:#0D1822}
+.rp-btn.sel-r{background:#0A2A1A;border-color:#2A6A4A;color:#4ACC88}
+.rp-btn.sel-nr{background:#111111;border-color:#333333;color:#666666}
+.rp-btn.sel-p{background:#1A0A2A;border-color:#5A3A8A;color:#8866CC}
+.rp-btn.sel-h{background:#2A0A0A;border-color:#7A3A2A;color:#CC6644}
+.rp-btn.sel-mnpi{background:#2A1A0A;border-color:#8A6A2A;color:#CC9944}
+.dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dot.g{background:#4ACC88}.dot.gr{background:#333333}.dot.p{background:#8866CC}.dot.h{background:#CC6644}.dot.m{background:#CC9944}
+.itag{width:100%;padding:5px 10px;border-radius:5px;border:1px solid #1A2A3A;background:transparent;color:#4A6A8A;font-size:11px;cursor:pointer;margin-bottom:3px;text-align:left}
+.itag:hover{background:#0D1822;color:#7A9AB0}
+.itag.sel{background:#0D1E30;border-color:#2A5A8A44;color:#4A9ECC}
+.itag::before{content:'+ '}
+.itag.sel::before{content:'✓ '}
+.save-next{width:100%;padding:9px;background:#1A5A8A;color:#fff;border:none;border-radius:7px;font-size:12px;font-weight:600;cursor:pointer;margin-top:8px}
+.save-next:hover{background:#1A4A7A}
+
+/* REPORT */
+#report-view{display:none;padding:2rem;max-width:900px;margin:0 auto}
+.rep-back{background:#0F1A24;color:#7A9AB0;border:none;padding:7px 16px;border-radius:6px;font-size:12px;cursor:pointer;margin-bottom:2rem;display:inline-block}
+.rep-eyebrow{font-size:10px;letter-spacing:0.15em;text-transform:uppercase;color:#4A9ECC;text-align:center;margin-bottom:8px}
+.rep-title{font-size:30px;font-weight:700;color:#C0D0E0;text-align:center;margin-bottom:4px}
+.rep-meta{font-size:12px;color:#4A6A8A;text-align:center;margin-bottom:2rem}
+.rep-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:2rem}
+.rs{background:#0F1A24;border:1px solid #1A2A3A;border-radius:10px;padding:1rem;text-align:center}
+.rs-n{font-size:28px;font-weight:700;color:#C0D0E0}
+.rs-n.b{color:#4A9ECC}.rs-n.r{color:#CC6644}.rs-n.m{color:#CC9944}
+.rs-l{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:#3A5A7A;margin-top:4px}
+.rep-section{margin-bottom:2rem}
+.rep-section-title{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:#4A9ECC;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid #1A2A3A}
+.search-result-row{background:#0F1A24;border:1px solid #1A2A3A;border-radius:8px;padding:12px;margin-bottom:8px}
+.sr-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px}
+.sr-name{font-size:13px;font-weight:600;color:#C0D0E0}
+.sr-hits{font-size:12px;color:#4A9ECC;font-weight:600}
+.sr-query{font-family:'Courier New',monospace;font-size:11px;color:#4ACCAA;background:#071018;padding:5px 8px;border-radius:4px;margin:4px 0;word-break:break-all}
+.sr-note{font-size:11px;color:#5A7A9A}
+table{width:100%;border-collapse:collapse}
+th{font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:#4A6A8A;padding:8px 12px;text-align:left;background:#080E14}
+td{font-size:12px;color:#7A9AB0;padding:9px 12px;border-bottom:1px solid #111E2A}
+.cat-r{color:#4ACC88;font-weight:600}.cat-nr{color:#555555;font-weight:600}.cat-p{color:#8866CC;font-weight:600}.cat-h{color:#CC6644;font-weight:600}.cat-m{color:#CC9944;font-weight:600}
+.hot-row{background:#180A0A;border:1px solid #2A1A1A;border-radius:8px;padding:12px;margin-bottom:8px}
+.hot-id{font-size:10px;color:#CC6644;margin-bottom:4px}
+.hot-title{font-size:13px;font-weight:600;color:#C0D0E0;margin-bottom:4px}
+.hot-note{font-size:12px;color:#7A9AB0;line-height:1.6}
+.rec-row{display:flex;gap:10px;align-items:flex-start;padding:10px;background:#0F1A24;border:1px solid #1A2A3A;border-radius:8px;margin-bottom:8px;font-size:13px;color:#7A9AB0;line-height:1.6}
+.rec-num{color:#4A9ECC;font-weight:700;flex-shrink:0}
+.print-btn{background:#1A5A8A;color:#fff;border:none;padding:10px 24px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;display:block;margin:0 auto}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#080E14}
+::-webkit-scrollbar-thumb{background:#1A2A3A;border-radius:2px}
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div id="landing">
+  <div class="landing-sub">Relativity Search &amp; Review Strategy Simulation</div>
+  <h1 class="landing-title">Hartwell Capital <span>Management LLC</span></h1>
+  <p class="landing-desc">Securities litigation · Insider trading investigation · Material Non-Public Information (MNPI) disclosure analysis. Build and execute a complete Relativity search strategy, review key documents, and generate a formal strategy report.</p>
+  <div class="stats-row">
+    <div class="stat"><div class="stat-n">12</div><div class="stat-l">Search Terms</div></div>
+    <div class="stat"><div class="stat-n">60</div><div class="stat-l">Documents</div></div>
+    <div class="stat"><div class="stat-n">4</div><div class="stat-l">Custodians</div></div>
+    <div class="stat"><div class="stat-n">3</div><div class="stat-l">Issue Tags</div></div>
+  </div>
+  <div class="matter-card">
+    <div class="matter-label">Matter Background</div>
+    <p class="matter-text">Hartwell Capital Management LLC, a mid-size hedge fund, is under investigation by the SEC for alleged insider trading and improper disclosure of material non-public information (MNPI). A former portfolio manager allegedly received tips from a corporate contact at Deltatek Industries prior to trading on their earnings announcements.</p>
+    <p class="matter-text">Your task is to design a defensible Relativity search strategy, identify key custodians, build Boolean search terms, run searches, review responsive documents, and produce a formal Review Strategy Report for outside counsel.</p>
+    <div class="parties">
+      <div class="party"><div class="party-role">Client / Defendant</div><div class="party-name">Hartwell Capital Mgmt LLC</div><div class="party-sub">Hedge fund, ~85 employees</div></div>
+      <div class="party"><div class="party-role">Regulator</div><div class="party-name">SEC Enforcement Division</div><div class="party-sub">Market Abuse Unit</div></div>
+      <div class="party"><div class="party-role">Key Custodian</div><div class="party-name">Marcus Webb</div><div class="party-sub">Former Portfolio Manager</div></div>
+      <div class="party"><div class="party-role">Outside Counsel</div><div class="party-name">Thornton &amp; Associates</div><div class="party-sub">Lead: Atty. James Thornton</div></div>
+    </div>
+  </div>
+  <button class="start-btn" onclick="startApp()">Begin Search Strategy →</button>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="top-bar">
+    <div class="rel-badge">RELATIVITY</div>
+    <div class="top-matter">Hartwell Capital Management · SEC Investigation · Search &amp; Review</div>
+    <div class="top-tabs">
+      <button class="ttab active" onclick="showTab(&#39;search&#39;,this)">Search Builder</button>
+      <button class="ttab" onclick="showTab(&#39;review&#39;,this)">Document Review</button>
+    </div>
+    <button class="report-btn" onclick="showReport()">View Report →</button>
+  </div>
+
+  <!-- SEARCH BUILDER TAB -->
+  <div class="tab-content active" id="tab-search" style="overflow-y:auto">
+    <div class="search-wrap">
+      <div class="sw-title">Search Term Strategy</div>
+      <p class="sw-sub">Build your Boolean search strategy below. Run each search to see hit counts, then refine as needed before moving to document review.</p>
+
+      <div class="section-card">
+        <div class="section-card-title">Custodian List</div>
+        <table class="search-table">
+          <tbody><tr><th>Custodian</th><th>Title</th><th>Relevance</th><th>Data Sources</th></tr>
+          <tr><td><span style="color:#C0D0E0;font-weight:600">Marcus Webb</span></td><td style="color:#7A9AB0">Former Portfolio Manager</td><td style="color:#CC6644">Primary</td><td style="color:#7A9AB0">Email, Bloomberg Chat, Trade Records</td></tr>
+          <tr><td><span style="color:#C0D0E0;font-weight:600">Sandra Okafor</span></td><td style="color:#7A9AB0">Chief Compliance Officer</td><td style="color:#CC9944">Secondary</td><td style="color:#7A9AB0">Email, Compliance Logs</td></tr>
+          <tr><td><span style="color:#C0D0E0;font-weight:600">David Cheng</span></td><td style="color:#7A9AB0">Research Analyst</td><td style="color:#CC9944">Secondary</td><td style="color:#7A9AB0">Email, Research Notes</td></tr>
+          <tr><td><span style="color:#C0D0E0;font-weight:600">Patricia Voss</span></td><td style="color:#7A9AB0">CEO, Hartwell Capital</td><td style="color:#4A9ECC">Tertiary</td><td style="color:#7A9AB0">Email, Board Communications</td></tr>
+        </tbody></table>
+      </div>
+
+      <div class="section-card">
+        <div class="section-card-title">Boolean Search Terms</div>
+        <table class="search-table" id="searchTable">
+          <tbody><tr><th>#</th><th>Search Name</th><th>Query</th><th>Hits</th><th>Action</th></tr>
+        </tbody></table>
+      </div>
+
+      <div class="section-card">
+        <div class="section-card-title">Search Notes &amp; Refinements</div>
+        <textarea id="searchNotes" style="width:100%;background:#0A1420;border:1px solid #1A2A3A;border-radius:8px;padding:12px;color:#7A9AB0;font-size:13px;min-height:100px;outline:none;resize:vertical;line-height:1.7" placeholder="Document your search rationale, refinements, and methodology here...">Search Strategy Notes — Hartwell Capital Management LLC
+
+Initial keyword universe developed from matter background and SEC subpoena scope. Primary focus on MNPI-related communications between Marcus Webb and external contacts at Deltatek Industries.
+
+Key refinement decisions:
+- Narrowed "tip" and "inside" terms with proximity operators to reduce false positives
+- Added Bloomberg Chat as separate data source given Webb's known use of chat platform
+- Date range limited to 6 months pre-trade through 3 months post-investigation notice</textarea>
+      </div>
+
+      <button class="add-search-btn" onclick="addCustomSearch()">+ Add Custom Search Term</button>
+    </div>
+  </div>
+
+  <!-- REVIEW TAB -->
+  <div class="tab-content" id="tab-review">
+    <div class="review-wrap">
+      <div class="rev-sidebar">
+        <div class="rev-sidebar-hdr">
+          <div class="rev-sidebar-title">Document Queue</div>
+          <input class="rev-search" placeholder="Search documents..." oninput="filterRevDocs(this.value)">
+          <div class="rev-filters">
+            <button class="rfilt active" onclick="setRevFilter(&#39;all&#39;,this)">All</button>
+            <button class="rfilt" onclick="setRevFilter(&#39;pending&#39;,this)">Pending</button>
+            <button class="rfilt" onclick="setRevFilter(&#39;hot&#39;,this)">Hot</button>
+            <button class="rfilt" onclick="setRevFilter(&#39;mnpi&#39;,this)">MNPI</button>
+          </div>
+        </div>
+        <div class="rev-list" id="revList"></div>
+      </div>
+      <div class="rev-viewer">
+        <div class="rev-doc-hdr" id="revDocHdr"></div>
+        <div id="revNote" style="display:none"></div>
+        <div id="mnpiNote" style="display:none"></div>
+        <div class="rev-body"><div class="rev-content" id="revContent"></div></div>
+      </div>
+      <div class="rev-coding">
+        <div class="rp-section">
+          <div class="rp-label">Responsiveness</div>
+          <button class="rp-btn" id="rbtn-r" onclick="setRevCode(&#39;r&#39;)"><span class="dot g"></span>Responsive</button>
+          <button class="rp-btn" id="rbtn-nr" onclick="setRevCode(&#39;nr&#39;)"><span class="dot gr"></span>Non-Responsive</button>
+        </div>
+        <div class="rp-section">
+          <div class="rp-label">Privilege</div>
+          <button class="rp-btn" id="rbtn-p" onclick="setRevCode(&#39;p&#39;)"><span class="dot p"></span>Privileged</button>
+        </div>
+        <div class="rp-section">
+          <div class="rp-label">Designations</div>
+          <button class="rp-btn" id="rbtn-h" onclick="setRevCode(&#39;h&#39;)"><span class="dot h"></span>Hot Document</button>
+          <button class="rp-btn" id="rbtn-mnpi" onclick="setRevCode(&#39;mnpi&#39;)"><span class="dot m"></span>MNPI Flag</button>
+        </div>
+        <div class="rp-section">
+          <div class="rp-label">Issue Tags</div>
+          <button class="itag" id="itag-trading" onclick="toggleRevTag(&#39;trading&#39;)">Trading Activity</button>
+          <button class="itag" id="itag-communication" onclick="toggleRevTag(&#39;communication&#39;)">External Communication</button>
+          <button class="itag" id="itag-compliance" onclick="toggleRevTag(&#39;compliance&#39;)">Compliance</button>
+          <button class="itag" id="itag-deltatek" onclick="toggleRevTag(&#39;deltatek&#39;)">Deltatek Connection</button>
+          <button class="itag" id="itag-earnings" onclick="toggleRevTag(&#39;earnings&#39;)">Earnings Related</button>
+        </div>
+        <div class="rp-section">
+          <button class="save-next" onclick="saveRevNext()">Save &amp; Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT -->
+<div id="report-view">
+  <button class="rep-back" onclick="hideReport()">← Back to Review</button>
+  <div class="rep-eyebrow">Relativity Search &amp; Review Strategy Report</div>
+  <div class="rep-title">Hartwell Capital Management LLC</div>
+  <div class="rep-meta">Prepared by: Princessca Lacroix · Matter: HCM-SEC-2024 · Generated: July 20, 2026</div>
+  <div class="rep-stats" id="repStats"></div>
+  <div class="rep-section">
+    <div class="rep-section-title">Search Term Results</div>
+    <div id="searchResults"></div>
+  </div>
+  <div class="rep-section">
+    <div class="rep-section-title">Coding Summary</div>
+    <table id="repTable"><tbody><tr><th>Category</th><th>Count</th><th>% of Total</th><th>Notes</th></tr></tbody></table>
+  </div>
+  <div class="rep-section">
+    <div class="rep-section-title">Hot Documents — Key Exhibits</div>
+    <div id="repHotDocs"></div>
+  </div>
+  <div class="rep-section">
+    <div class="rep-section-title">Recommendations for Outside Counsel</div>
+    <div id="repRecs"></div>
+  </div>
+  <button class="print-btn" onclick="window.print()">Export Report</button>
+</div>
+
+<script>
+const searches = [
+  {name:'MNPI Core Terms',query:'"material non-public" OR "inside information" OR "MNPI" OR "non-public information"',hits:847,note:'Broad initial sweep — expect high volume, will need refinement'},
+  {name:'Insider Trading Direct',query:'"insider trading" OR "tipping" OR "tip" w/5 (stock OR trade OR position)',hits:312,note:'Proximity operator reduces false positives on "tip" usage'},
+  {name:'Deltatek Communications',query:'"Deltatek" AND (Webb OR Marcus) AND (earnings OR revenue OR guidance)',hits:156,note:'Key custodian connection to corporate source'},
+  {name:'Pre-Earnings Trade Activity',query:'(buy OR sell OR position OR trade) w/10 (Deltatek OR DTK) AND date>2023-01-01',hits:203,note:'Targets trading activity in proximity to Deltatek earnings windows'},
+  {name:'Bloomberg Chat — Webb',query:'custodian:"Marcus Webb" AND source:"Bloomberg Chat" AND (confidential OR "not public" OR "between us")',hits:88,note:'Bloomberg Chat channel — high priority for MNPI analysis'},
+  {name:'Compliance Exceptions',query:'"compliance exception" OR "pre-clearance" OR "restricted list" AND (Webb OR Deltatek)',hits:44,note:'Compliance workflow documents — key for breach of procedure analysis'},
+  {name:'External Tip Communications',query:'(Reeves OR "James Reeves") AND (Webb OR Marcus) AND (Deltatek OR DTK OR earnings)',hits:67,note:'Communications between Webb and alleged Deltatek source James Reeves'},
+  {name:'Legal Hold Scope',query:'"legal hold" OR "litigation hold" OR "preserve" AND date>2024-01-01',hits:29,note:'Post-investigation hold compliance check'},
+  {name:'Trade Timing Analysis',query:'(purchase OR acquisition OR "increased position") AND Deltatek AND date:[2023-01-01 TO 2024-06-30]',hits:134,note:'Trade timing relative to earnings announcements — damages analysis'},
+  {name:'Privilege Sweep',query:'(Thornton OR "outside counsel" OR "attorney" OR "privileged") AND NOT (Bloomberg OR trade OR position)',hits:93,note:'Privilege identification sweep — route to privilege review queue'},
+  {name:'Earnings Call Prep',query:'"earnings call" OR "guidance" OR "revenue forecast" AND Deltatek AND (Webb OR Marcus OR Reeves)',hits:71,note:'Earnings information flow from Deltatek to Hartwell'},
+  {name:'Spoilation Risk',query:'(delete OR deleted OR "do not keep" OR "off the record" OR "clean up") AND (Webb OR Marcus OR Reeves OR Deltatek)',hits:18,note:'⚠ Spoilation risk terms — escalate immediately if confirmed'},
+];
+
+const revDocs = [
+  {id:'HCM-001',type:'Bloomberg Chat',from:'Marcus Webb (mwebb@hartwell.com)',to:'James Reeves (jreeves@deltatek.com)',date:'2023-03-08',subject:'RE: Q1 Numbers',content:'Hey James — any color on Q1 before Thursday? The street is way off on the rev number. Just between us.\n\nMarcus',note:'⚡ Hot Document: Webb directly soliciting non-public Q1 revenue information from Deltatek employee 3 days before earnings announcement.',mnpi:true,coding:{r:true,h:true,mnpi:true,tags:['communication','deltatek','earnings']}},
+  {id:'HCM-002',type:'Bloomberg Chat',from:'James Reeves (jreeves@deltatek.com)',to:'Marcus Webb (mwebb@hartwell.com)',date:'2023-03-08',subject:'RE: RE: Q1 Numbers',content:'I shouldn\'t be telling you this but the number is going to surprise people. Way above consensus. Don\'t quote me.\n\nJR',note:'⚡ Hot Document: Deltatek employee explicitly providing advance earnings guidance to Webb. Core MNPI disclosure — critical exhibit.',mnpi:true,coding:{r:true,h:true,mnpi:true,tags:['communication','deltatek','earnings']}},
+  {id:'HCM-003',type:'Trade Record',from:'Hartwell Capital — Trade Execution',to:'Prime Brokerage',date:'2023-03-09',subject:'Trade Confirmation — Deltatek Industries (DTK)',content:'TRADE CONFIRMATION\nHartwell Capital Management LLC\n\nSecurity: Deltatek Industries Inc. (DTK)\nTransaction: BUY\nShares: 450,000\nPrice: $42.18\nTotal Value: $18,981,000\n\nExecuted by: M. Webb (Portfolio Manager)\nAccount: HCM-ALPHA-FUND-001\nTime: 09:34:22 EST',note:'⚡ Hot Document: Webb executes $18.9M DTK purchase the morning after receiving inside information from Reeves. Direct evidence of trading on MNPI.',mnpi:true,coding:{r:true,h:true,mnpi:true,tags:['trading','deltatek']}},
+  {id:'HCM-004',type:'Email',from:'Marcus Webb',to:'David Cheng',date:'2023-03-09',subject:'DTK — Increase Position',content:'David,\n\nBump DTK to 4% of the book. I have strong conviction here ahead of earnings. Don\'t need to discuss further.\n\nMarcus',note:'⚡ Hot Document: Webb directing analyst to increase position with unexplained "strong conviction" — circumstantial evidence of MNPI-based trading decision.',coding:{r:true,h:true,mnpi:true,tags:['trading','deltatek']}},
+  {id:'HCM-005',type:'Email',from:'Deltatek IR',to:'Public Distribution',date:'2023-03-11',subject:'Deltatek Q1 2023 Earnings Release',content:'Deltatek Industries Reports Record Q1 2023 Results\n\nQ1 Revenue: $847M — 34% above consensus estimate of $632M\nQ1 EPS: $2.14 — significantly above consensus of $1.48\n\nStock reaction: DTK +22% in after-hours trading following announcement.',note:'⚡ Earnings release confirming Reeves\' advance tip was accurate — Hartwell\'s DTK position gained approximately $4.2M in one session.',coding:{r:true,h:true,tags:['earnings','deltatek']}},
+  {id:'HCM-006',type:'Email',from:'Sandra Okafor (CCO)',to:'Marcus Webb',date:'2023-02-15',subject:'Pre-Clearance Reminder — Deltatek on Restricted List',content:'Marcus,\n\nReminder that Deltatek Industries remains on our restricted list pending the Q1 earnings blackout window. Any proposed trades in DTK require my pre-clearance approval per our compliance policy.\n\nPlease confirm receipt.\n\nSandra Okafor, CCO',note:'⚡ Webb was on notice that DTK required compliance pre-clearance. No pre-clearance request was filed before the March 9 trade.',coding:{r:true,h:true,tags:['compliance','trading','deltatek']}},
+  {id:'HCM-007',type:'Email',from:'Marcus Webb',to:'Sandra Okafor',date:'2023-02-15',subject:'RE: Pre-Clearance Reminder',content:'Sandra — noted. I won\'t trade DTK without clearing with you first.\n\nMarcus',coding:{r:true,tags:['compliance']}},
+  {id:'HCM-008',type:'Email',from:'Sandra Okafor',to:'Patricia Voss (CEO)',date:'2023-04-02',subject:'PRIVILEGED — Compliance Incident Report',content:'Patricia,\n\nPrivileged & Confidential — Attorney Work Product\n\nI have identified a potential compliance breach related to the March 9 DTK trade executed by Marcus Webb. The trade occurred during the restricted period without pre-clearance approval from my office.\n\nI am referring this matter to outside counsel. Please do not discuss externally.\n\nSandra',coding:{p:true,tags:['compliance']}},
+  {id:'HCM-009',type:'Email',from:'Patricia Voss',to:'James Thornton (Outside Counsel)',date:'2023-04-05',subject:'PRIVILEGED — Urgent: Potential SEC Matter',content:'James,\n\nPrivileged & Confidential\n\nWe need to speak urgently. Our CCO has flagged a potential compliance issue involving one of our PMs. I believe this may have SEC implications.\n\nCan you be available tomorrow morning?\n\nPatricia Voss, CEO',coding:{p:true,tags:['compliance']}},
+  {id:'HCM-010',type:'Legal Hold',from:'James Thornton, Thornton & Associates',to:'All Hartwell Capital Staff',date:'2023-04-10',subject:'LEGAL HOLD NOTICE — Immediate Action Required',content:'LEGAL HOLD NOTICE\nHartwell Capital Management LLC\nApril 10, 2023\n\nAll employees are required to immediately preserve all documents, communications, and data related to:\n\n1. Any trading activity in Deltatek Industries (DTK) from January 2023 to present\n2. All communications with any Deltatek employees or representatives\n3. All pre-clearance requests and compliance records\n4. Bloomberg Chat and email communications involving Marcus Webb\n\nDo NOT delete, destroy, or alter any materials.',coding:{r:true,tags:['compliance']}},
+  {id:'HCM-011',type:'Email',from:'Marcus Webb',to:'James Reeves',date:'2023-01-20',subject:'Catch up',content:'James,\n\nGood catching up last week. Let me know if you\'re ever in NYC — would love to grab dinner.\n\nMarcus',coding:{r:true,tags:['communication','deltatek']}},
+  {id:'HCM-012',type:'Research Note',from:'David Cheng',to:'Investment Team',date:'2023-02-28',subject:'DTK — Sector Analysis Q1 Preview',content:'Sector Analysis: Technology Hardware — Q1 Preview\n\nDeltaetek Industries (DTK): We model Q1 revenue of $618M, slightly below street consensus of $632M. Supply chain normalization and enterprise spending caution remain headwinds.\n\nRecommendation: Maintain current 2.1% position. No catalyst for meaningful upside in near term.\n\nD. Cheng, Research',note:'Internal research pre-dates MNPI tip — shows legitimate analysis modeled DTK revenue at $618M vs actual $847M. Webb\'s sudden conviction not supported by internal research.',coding:{r:true,tags:['trading','earnings']}},
+];
+
+// Fill remaining 48 docs
+for(let i=13;i<=60;i++){
+  const isR=i<=45;
+  revDocs.push({
+    id:'HCM-'+(i<10?'00'+i:i<100?'0'+i:i),
+    type:['Email','Bloomberg Chat','Trade Record','Research Note','Internal Memo'][i%5],
+    from:'staff@hartwell.com',
+    to:'team@hartwell.com',
+    date:'2023-0'+(i%9+1)+'-'+(i%28+1<10?'0'+(i%28+1):i%28+1),
+    subject:['RE: Market Update','Portfolio Review Notes','Compliance Training','Q2 Outlook','Fund Performance Report'][i%5],
+    content:'Document content for matter HCM-SEC-2024.\n\nThis document is part of the Hartwell Capital Management review set. Assess for responsiveness to the SEC insider trading investigation.',
+    coding:isR?{r:true,tags:i%5===0?['trading']:i%3===0?['compliance']:[]}:{nr:true,tags:[]}
+  });
+}
+
+let currentSearch = -1;
+let searchRan = {};
+let currentRevIdx = 0;
+let revCodings = {};
+let revFilter = 'all';
+let revSearch = '';
+
+revDocs.forEach(d=>{ revCodings[d.id]=JSON.parse(JSON.stringify(d.coding)); });
+
+function startApp(){
+  document.getElementById('landing').style.display='none';
+  document.getElementById('app').style.display='flex';
+  buildSearchTable();
+  buildRevList();
+  loadRevDoc(0);
+}
+
+function buildSearchTable(){
+  const tbody=document.getElementById('searchTable');
+  tbody.innerHTML='<tr><th>#</th><th>Search Name</th><th>Query</th><th>Hits</th><th>Action</th></tr>';
+  searches.forEach((s,i)=>{
+    const ran=searchRan[i];
+    tbody.innerHTML+=`<tr>
+      <td><span class="search-num">${i+1}</span></td>
+      <td><div class="search-name">${s.name}</div><div class="search-note">${s.note}</div></td>
+      <td><div class="search-query">${s.query}</div></td>
+      <td>${ran?`<span class="hits-badge">${s.hits} hits</span>`:'<span style="color:#3A5A7A;font-size:11px">Not run</span>'}</td>
+      <td><button class="run-btn${ran?' ran':''}" onclick="runSearch(${i})">${ran?'✓ Run':'▶ Run'}</button></td>
+    </tr>`;
+  });
+}
+
+function runSearch(i){
+  searchRan[i]=true;
+  buildSearchTable();
+}
+
+function addCustomSearch(){
+  searches.push({name:'Custom Search '+(searches.length+1),query:'(term1 OR term2) AND custodian:"Marcus Webb"',hits:Math.floor(Math.random()*50+10),note:'Custom search term added by reviewer'});
+  buildSearchTable();
+}
+
+function showTab(tab,btn){
+  document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.ttab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+tab).classList.add('active');
+  btn.classList.add('active');
+}
+
+function buildRevList(){
+  const list=document.getElementById('revList');
+  list.innerHTML='';
+  revDocs.forEach((d,i)=>{
+    const c=revCodings[d.id]||{};
+    if(revFilter==='pending'&&(c.r||c.nr)) return;
+    if(revFilter==='hot'&&!c.h) return;
+    if(revFilter==='mnpi'&&!c.mnpi) return;
+    if(revSearch&&!d.subject.toLowerCase().includes(revSearch)&&!d.id.toLowerCase().includes(revSearch)) return;
+    const div=document.createElement('div');
+    div.className='rev-item'+(i===currentRevIdx?' active':'');
+    div.onclick=()=>loadRevDoc(i);
+    let tags='';
+    if(c.r) tags+='<span class="rtag r">Resp</span>';
+    if(c.nr) tags+='<span class="rtag nr">Non-Resp</span>';
+    if(c.p) tags+='<span class="rtag p">Priv</span>';
+    if(c.h) tags+='<span class="rtag h">Hot</span>';
+    if(c.mnpi) tags+='<span class="rtag mnpi">MNPI</span>';
+    div.innerHTML=`<div class="rev-id">${d.id}</div><div class="rev-title">${d.subject}</div><div class="rev-meta">${d.type} · ${d.date}</div>${tags?'<div class="rev-tags">'+tags+'</div>':''}`;
+    list.appendChild(div);
+  });
+}
+
+function loadRevDoc(idx){
+  currentRevIdx=idx;
+  const d=revDocs[idx];
+  const c=revCodings[d.id]||{};
+  document.getElementById('revDocHdr').innerHTML=`
+    <div class="rev-doc-type">${d.type}</div>
+    <div class="rev-doc-subject">${d.subject}</div>
+    <div class="rev-doc-fields">
+      <div class="rev-doc-field"><label>Doc ID</label><span>${d.id}</span></div>
+      <div class="rev-doc-field"><label>Date</label><span>${d.date}</span></div>
+      <div class="rev-doc-field"><label>From</label><span>${d.from}</span></div>
+      <div class="rev-doc-field"><label>To</label><span>${d.to}</span></div>
+    </div>`;
+  document.getElementById('revContent').textContent=d.content;
+  const noteEl=document.getElementById('revNote');
+  if(d.note){noteEl.style.display='block';noteEl.className='rev-note';noteEl.innerHTML='⚡ <strong>Reviewer Note:</strong> '+d.note.replace('⚡ Hot Document: ','').replace('⚡ Reviewer Note: ','');}
+  else noteEl.style.display='none';
+  const mnpiEl=document.getElementById('mnpiNote');
+  if(d.mnpi){mnpiEl.style.display='block';mnpiEl.className='mnpi-note';mnpiEl.innerHTML='⚠ <strong>MNPI Flag:</strong> This document contains potential Material Non-Public Information. Flag for attorney review and consider for MNPI issue tag.';}
+  else mnpiEl.style.display='none';
+  ['r','nr','p','h','mnpi'].forEach(code=>{
+    document.getElementById('rbtn-'+code).className='rp-btn'+(c[code]?' sel-'+code:'');
+  });
+  ['trading','communication','compliance','deltatek','earnings'].forEach(t=>{
+    const btn=document.getElementById('itag-'+t);
+    btn.className='itag'+((c.tags&&c.tags.includes(t))?' sel':'');
+  });
+  buildRevList();
+}
+
+function setRevCode(code){
+  const c=revCodings[revDocs[currentRevIdx].id]||{};
+  if(code==='r'){c.r=true;c.nr=false;}
+  else if(code==='nr'){c.nr=true;c.r=false;}
+  else c[code]=!c[code];
+  revCodings[revDocs[currentRevIdx].id]=c;
+  loadRevDoc(currentRevIdx);
+}
+
+function toggleRevTag(tag){
+  const c=revCodings[revDocs[currentRevIdx].id]||{};
+  if(!c.tags) c.tags=[];
+  const idx=c.tags.indexOf(tag);
+  if(idx>-1) c.tags.splice(idx,1); else c.tags.push(tag);
+  revCodings[revDocs[currentRevIdx].id]=c;
+  loadRevDoc(currentRevIdx);
+}
+
+function saveRevNext(){
+  if(currentRevIdx<revDocs.length-1) loadRevDoc(currentRevIdx+1);
+}
+
+function setRevFilter(f,btn){
+  revFilter=f;
+  document.querySelectorAll('.rfilt').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildRevList();
+}
+
+function filterRevDocs(val){
+  revSearch=val.toLowerCase();
+  buildRevList();
+}
+
+function showReport(){
+  document.getElementById('app').style.display='none';
+  document.getElementById('report-view').style.display='block';
+  generateReport();
+}
+
+function hideReport(){
+  document.getElementById('report-view').style.display='none';
+  document.getElementById('app').style.display='flex';
+}
+
+function generateReport(){
+  const codings=Object.values(revCodings);
+  const responsive=codings.filter(c=>c.r).length;
+  const nonresponsive=codings.filter(c=>c.nr).length;
+  const privileged=codings.filter(c=>c.p).length;
+  const hot=codings.filter(c=>c.h).length;
+  const mnpi=codings.filter(c=>c.mnpi).length;
+  const coded=responsive+nonresponsive;
+  const uncoded=revDocs.length-coded;
+  document.getElementById('repStats').innerHTML=`
+    <div class="rs"><div class="rs-n">${revDocs.length}</div><div class="rs-l">Total Docs</div></div>
+    <div class="rs"><div class="rs-n b">${coded}</div><div class="rs-l">Coded</div></div>
+    <div class="rs"><div class="rs-n r">${hot}</div><div class="rs-l">Hot Docs</div></div>
+    <div class="rs"><div class="rs-n m">${mnpi}</div><div class="rs-l">MNPI Flagged</div></div>`;
+  const sr=document.getElementById('searchResults');
+  sr.innerHTML=searches.map((s,i)=>`<div class="search-result-row"><div class="sr-top"><div class="sr-name">${s.name}</div><div class="sr-hits">${s.hits} hits</div></div><div class="sr-query">${s.query}</div><div class="sr-note">${s.note}</div></div>`).join('');
+  const pct=n=>revDocs.length?Math.round(n/revDocs.length*100)+'%':'0%';
+  document.getElementById('repTable').innerHTML=`<tr><th>Category</th><th>Count</th><th>% of Total</th><th>Notes</th></tr>
+    <tr><td><span class="cat-r">Responsive</span></td><td>${responsive}</td><td>${pct(responsive)}</td><td>Documents within SEC subpoena scope</td></tr>
+    <tr><td><span class="cat-nr">Non-Responsive</span></td><td>${nonresponsive}</td><td>${pct(nonresponsive)}</td><td>Outside scope of review parameters</td></tr>
+    <tr><td><span class="cat-p">Privileged</span></td><td>${privileged}</td><td>${pct(privileged)}</td><td>Attorney-client privilege — withhold from production</td></tr>
+    <tr><td><span class="cat-h">Hot Documents</span></td><td>${hot}</td><td>${pct(hot)}</td><td>Key exhibits — high evidentiary value</td></tr>
+    <tr><td><span class="cat-m">MNPI Flagged</span></td><td>${mnpi}</td><td>${pct(mnpi)}</td><td>Potential Material Non-Public Information — attorney review required</td></tr>
+    <tr><td><span style="color:#3A5A7A;font-weight:600">Uncoded / Pending</span></td><td>${uncoded}</td><td>${pct(uncoded)}</td><td>Awaiting review decision</td></tr>`;
+  const hotDocs=revDocs.filter(d=>revCodings[d.id]&&revCodings[d.id].h);
+  document.getElementById('repHotDocs').innerHTML=hotDocs.map(d=>`<div class="hot-row"><div class="hot-id">${d.id} · ${d.date} · ${d.type}</div><div class="hot-title">${d.subject}</div><div class="hot-note">${d.note?d.note.replace('⚡ Hot Document: ','').replace('⚡ Reviewer Note: ',''):'High evidentiary significance — flagged for attorney review'}</div></div>`).join('');
+  document.getElementById('repRecs').innerHTML=[
+    'Prioritize production of all MNPI-flagged Bloomberg Chat communications between Webb and Reeves — these documents form the core of the SEC\'s likely theory of liability.',
+    'Withhold privileged communications between CCO Okafor, CEO Voss, and outside counsel Thornton — prepare privilege log for submission with production.',
+    'Commission forensic analysis of Webb\'s Bloomberg Chat deletion activity — spoilation risk terms identified in search set warrant immediate investigation.',
+    'Cross-reference Webb\'s March 9 trade execution timestamp against Bloomberg Chat message log — establish precise timeline for SEC response.',
+    'Obtain and review Deltatek\'s internal communications regarding the Reeves-Webb relationship to assess corporate liability exposure.',
+  ].map((r,i)=>`<div class="rec-row"><span class="rec-num">${i+1}.</span><span>${r}</span></div>`).join('');
+}
+</script>
+
+
+</body></html>
